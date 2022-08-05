@@ -1,62 +1,76 @@
-import tkinter as tk
-from tkinter import filedialog as fd
-from tkinter.messagebox import showinfo
+import tkinter
+from tkinter import font
+import tkinter.messagebox
+import customtkinter
 
-class menu:
+customtkinter.set_appearance_mode("System")
+customtkinter.set_default_color_theme("blue")
+
+
+class App(customtkinter.CTk):
+
+    WIDTH = 780
+    HEIGHT = 520
+
     def __init__(self):
-        self.window = tk.Tk()
-        self.window.title("Práctica1 - LFP")
-        self.window.resizable(False, False)
-        self.window.state('zoomed')
-        self.colorButton=("gray77")
-        self.titles()
-        self.buttons()
+        super().__init__()
 
-        self.window.mainloop()
+        self.title("Practica1 - LFP")
+        self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-    def titles(self):
-        self.title = tk.Label(self.window, text='Lenguajes Formales y de Programación')
-        self.title.pack(anchor=tk.CENTER,ipady=10)
-        self.title.config(font=('Verdana',24)) 
+        # ============ create two frames ============
+        # configure grid layout (2x1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
-        self.name = tk.Label(self.window, text='Brandon Andy Jefferson Tejaxún Pichiyá')
-        self.name.pack(anchor=tk.CENTER,ipady=10)
-        self.name.config(font=('Verdana',20))
+        self.frame_left = customtkinter.CTkFrame(master=self,width=180,corner_radius=0)
+        self.frame_left.grid(row=0,column=0,sticky="nswe")
 
-        self.carne = tk.Label(self.window, text='202112030')
-        self.carne.pack(anchor=tk.CENTER,ipady=10)
-        self.carne.config(font=('Verdana',20))
+        self.frame_right = customtkinter.CTkFrame(master=self)
+        self.frame_right.grid(row=0,column=1,sticky="nswe",padx=20,pady=20)
 
-    def buttons(self):
-        self.fileUpload = tk.Button(self.window,text="Cargar Archivo",bg=self.colorButton,width=16,height=2,command=self.selectFile)
-        self.fileUpload.place(x=600,y=250)
-        self.fileUpload.config(font=('Verdana',12))
+        # ============ frame_left ============
+        # configure grid layout (1x11)
+        self.frame_left.grid_rowconfigure(0, minsize=10)
+        self.frame_left.grid_rowconfigure(5, weight=1)
+        self.frame_left.grid_rowconfigure(8, minsize=20)
+        self.frame_left.grid_rowconfigure(11, minsize=10)
 
-        self.manageCourses = tk.Button(self.window,text="Gestionar Cursos",bg=self.colorButton,width=16,height=2,command=lambda:self.btnClik())
-        self.manageCourses.place(x=600,y=320)
-        self.manageCourses.config(font=('Verdana',12))
+        self.options = customtkinter.CTkLabel(master=self.frame_left,text="Opciones",text_font=("Roboto Medium",16))
+        self.options.grid(row=1,column=0,pady=10, padx=10)
 
-        self.credits = tk.Button(self.window,text="Conteo de Créditos",bg=self.colorButton,width=16,height=2,command=lambda:self.btnClik())
-        self.credits.place(x=600,y=390)
-        self.credits.config(font=('Verdana',12))
+        self.fileUpload = customtkinter.CTkButton(master=self.frame_left,text="Cargar Archivos",command=self.button_event)
+        self.fileUpload.grid(row=2,column=0,pady=10,padx=20)
 
-        self.leave = tk.Button(self.window,text="Salir",bg=self.colorButton,width=16,height=2,command=self.window.quit)
-        self.leave.place(x=600,y=460)
-        self.leave.config(font=('Verdana',12))
+        self.manageCourses = customtkinter.CTkButton(master=self.frame_left,text="Gestionar Cursos",command=self.button_event)
+        self.manageCourses.grid(row=3,column=0,pady=10,padx=20)
 
-    def selectFile(self):
-        filetypes = (
-            ('text files', '*.txt'),
-            ('All files', '*.*')
-        )
-        filename = fd.askopenfilename(
-            title='Open a file',
-            initialdir='/',
-            filetypes=filetypes)
-        showinfo(
-            title='Selected File',
-            message=filename
-        )
+        self.credits = customtkinter.CTkButton(master=self.frame_left,text="Conteo de Creditos",command=self.button_event)
+        self.credits.grid(row=4,column=0,pady=10,padx=20)
 
-if __name__ == '__main__':
-    app = menu()  
+        self.credits = customtkinter.CTkButton(master=self.frame_left,text="Salir",fg_color="#D35B58",hover_color="#C77C78",command=self.quit)
+        self.credits.grid(row=9,column=0,pady=10,padx=20)
+
+        # ============ frame_right ============
+
+        # configure grid layout (3x7)
+        self.frame_right.rowconfigure((0, 1, 2, 3), weight=1)
+        self.frame_right.rowconfigure(7, weight=10)
+        self.frame_right.columnconfigure((0, 1), weight=1)
+        self.frame_right.columnconfigure(2, weight=0)
+
+        self.data = customtkinter.CTkLabel(master=self.frame_right,text="Lenguajes Formales y de Programación\n" +"Brandon Andy J. Tejaxún Pichiyá\n" +"202112030",height=100,corner_radius=6,fg_color=("white", "gray38"),justify=tkinter.LEFT)
+        self.data.grid(column=0,row=0,columnspan=2,rowspan=4,sticky="nwe",padx=20,pady=20)
+        self.data.config(font=('Roboto Medium',13))
+
+    def button_event(self):
+        print("Button pressed")
+
+    def on_closing(self, event=0):
+        self.destroy()
+
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
