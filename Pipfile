@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 tk = "*"
+customtkinter = "*"
 
 [dev-packages]
 
