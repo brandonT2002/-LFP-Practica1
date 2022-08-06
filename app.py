@@ -58,13 +58,13 @@ class App(customtkinter.CTk):
         self.frameRight.rowconfigure(7, weight=10)
         self.frameRight.columnconfigure((0, 1), weight=1)
         self.frameRight.columnconfigure(2, weight=0)
-
+        """
         self.data = customtkinter.CTkLabel(master=self.frameRight,text="Lenguajes Formales y de Programación\nBrandon Andy J. Tejaxún Pichiyá\n202112030",height=70,corner_radius=6,fg_color=("white", "gray38"),justify=tkinter.CENTER)
         self.data.grid(column=0,row=0,columnspan=2,rowspan=4,sticky="nwe",padx=20,pady=20)
         self.data.config(font=('Roboto Medium',13))
-
+        """
         self.route = customtkinter.CTkEntry(master=self.frameRight,width=120,placeholder_text="Ruta del archivo")
-        self.route.grid(row=2,column=0,columnspan=2,pady=20,padx=20,sticky="we")
+        self.route.grid(row=0,column=0,columnspan=2,pady=20,padx=20,sticky="nwe")
 
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)
