@@ -1,4 +1,3 @@
-from tabnanny import check
 from builder import Course
 
 class Controller:
