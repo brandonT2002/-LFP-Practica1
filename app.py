@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import filedialog as fd
+from turtle import width
 import customtkinter
 from readData import Controller
 
@@ -8,7 +9,7 @@ customtkinter.set_default_color_theme("blue")
 
 
 class App(customtkinter.CTk):
-    WIDTH = 1250
+    WIDTH = 1325
     HEIGHT = 600
 
     def __init__(self):
@@ -89,14 +90,13 @@ class App(customtkinter.CTk):
         
         self.tableCourses()
 
-
     def tableCourses(self):
         self.table = customtkinter.CTkFrame(master=self.frameRight1)
-        self.table.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=20,sticky="nwe")
+        self.table.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(0,20),sticky="nwe")
         self.table.rowconfigure(0, weight=1)
         self.table.columnconfigure(0, weight=1)
 
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Código").grid(row=0,column=0,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Código",width=50).grid(row=0,column=0,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.table,text = "Nombre").grid(row=0,column=1,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.table,text = "Prerrequisitos").grid(row=0,column=2,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.table,text = "Obligatorio").grid(row=0,column=3,sticky="we")
@@ -106,12 +106,49 @@ class App(customtkinter.CTk):
         
         self.tableData()
 
-    def showCourses(self):        
+    def tableData(self):
+        self.results = self.data.courses
+        for i in range(len(self.results)):
+            exec(f"self.e{i}code = customtkinter.CTkEntry(self.table,width=50)")
+            exec(f"self.e{i}code.grid(row={i}+1,column=0,columnspan=1,sticky='we')")
+            exec(f"self.e{i}code.insert('end',self.results[{i}].code)")
+            exec(f"self.e{i}code.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}name = customtkinter.CTkEntry(self.table,width=250)")
+            exec(f"self.e{i}name.grid(row={i}+1,column=1,columnspan=1,sticky='we')")
+            exec(f"self.e{i}name.insert('end',self.results[{i}].name)")
+            exec(f"self.e{i}name.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}prerequisite = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}prerequisite.grid(row={i}+1,column=2,columnspan=1,sticky='e')")
+            exec(f"self.e{i}prerequisite.insert('end',self.results[{i}].prerequisite)")
+            exec(f"self.e{i}prerequisite.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}mandatory = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}mandatory.grid(row={i}+1,column=3,columnspan=1,sticky='e')")
+            exec(f"self.e{i}mandatory.insert('end',self.results[{i}].mandatory)")
+            exec(f"self.e{i}mandatory.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}semester = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}semester.grid(row={i}+1,column=4,columnspan=1,sticky='e')")
+            exec(f"self.e{i}semester.insert('end',self.results[{i}].semester)")
+            exec(f"self.e{i}semester.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}credits = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}credits.grid(row={i}+1,column=5,columnspan=1,sticky='e')")
+            exec(f"self.e{i}credits.insert('end',self.results[{i}].credits)")
+            exec(f"self.e{i}credits.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}state = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}state.grid(row={i}+1,column=6,columnspan=1,sticky='e')")
+            exec(f"self.e{i}state.insert('end',self.results[{i}].state)")
+            exec(f"self.e{i}state.configure(state=tkinter.DISABLED)")
+
+    def panelshowCourses(self):        
         self.panel = customtkinter.CTkFrame(master=self.frameRight1)
         self.panel.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=20,sticky="nwe")
         self.panel.rowconfigure(0, weight=1)
         self.panel.columnconfigure(0, weight=1)
-
 
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)
@@ -128,52 +165,6 @@ class App(customtkinter.CTk):
         self.tableData()
         self.route.insert(0,str(fileRoute))
         self.route.configure(state=tkinter.DISABLED)
-
-    def tableData(self):
-        self.results = self.data.courses
-        for i in range(len(self.results)):
-            exec(f"self.e{i}code = customtkinter.CTkEntry(self.table,width=150)")
-            exec(f"self.e{i}code.grid(row={i}+1,column=0,columnspan=1,sticky='we')")
-            exec(f"self.e{i}code.insert('end',self.results[{i}].code)")
-            exec(f"self.e{i}code.configure(state=tkinter.DISABLED)")
-
-            exec(f"self.e{i}name = customtkinter.CTkEntry(self.table,width=150)")
-            exec(f"self.e{i}name.grid(row={i}+1,column=1,columnspan=1,sticky='we')")
-            exec(f"self.e{i}name.insert('end',self.results[{i}].name)")
-            exec(f"self.e{i}name.configure(state=tkinter.DISABLED)")
-
-            exec(f"self.e{i}prerequisite = customtkinter.CTkEntry(self.table,width=150)")
-            exec(f"self.e{i}prerequisite.grid(row={i}+1,column=2,columnspan=1,sticky='we')")
-            exec(f"self.e{i}prerequisite.insert('end',self.results[{i}].prerequisite)")
-            exec(f"self.e{i}prerequisite.configure(state=tkinter.DISABLED)")
-
-            exec(f"self.e{i}mandatory = customtkinter.CTkEntry(self.table,width=150)")
-            exec(f"self.e{i}mandatory.grid(row={i}+1,column=3,columnspan=1,sticky='we')")
-            exec(f"self.e{i}mandatory.insert('end',self.results[{i}].mandatory)")
-            exec(f"self.e{i}mandatory.configure(state=tkinter.DISABLED)")
-
-            exec(f"self.e{i}semester = customtkinter.CTkEntry(self.table,width=150)")
-            exec(f"self.e{i}semester.grid(row={i}+1,column=4,columnspan=1,sticky='we')")
-            exec(f"self.e{i}semester.insert('end',self.results[{i}].semester)")
-            exec(f"self.e{i}semester.configure(state=tkinter.DISABLED)")
-
-            exec(f"self.e{i}credits = customtkinter.CTkEntry(self.table,width=150)")
-            exec(f"self.e{i}credits.grid(row={i}+1,column=5,columnspan=1,sticky='we')")
-            exec(f"self.e{i}credits.insert('end',self.results[{i}].credits)")
-            exec(f"self.e{i}credits.configure(state=tkinter.DISABLED)")
-
-            exec(f"self.e{i}state = customtkinter.CTkEntry(self.table,width=150)")
-            exec(f"self.e{i}state.grid(row={i}+1,column=6,columnspan=1,sticky='we')")
-            exec(f"self.e{i}state.insert('end',self.results[{i}].state)")
-            exec(f"self.e{i}state.configure(state=tkinter.DISABLED)")
-            """
-            for j in range(7):
-                exec(f"self.e{i}_{j} = customtkinter.CTkEntry(self.table,width=150)")
-                exec(f"self.e{i}_{j}.grid(row={i}+1,column={j},columnspan=1,sticky='we')")
-                exec("self.e"+str(i)+"_"+str(j)+".insert('end',self.results["+str(i)+"]["+str(j)+"])")
-                exec(f"self.e{i}_{j}.configure(state=tkinter.DISABLED)")
-            """
-        print(self.data.courses)
 
     def option1(self):
         pass
