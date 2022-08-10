@@ -1,6 +1,6 @@
 import tkinter
 from tkinter import filedialog as fd
-from turtle import width
+from tkinter import messagebox
 import customtkinter
 from readData import Controller
 
@@ -76,43 +76,48 @@ class App(customtkinter.CTk):
         self.showCourses = customtkinter.CTkButton(master=self.frameRight1,text="Mostrar Cursos",fg_color="gray40",hover_color="gray25",command=self.option2)
         self.showCourses.grid(row=0,column=1,pady=10,padx=5)
 
-        self.addCourse = customtkinter.CTkButton(master=self.frameRight1,text="Agregar Curso",fg_color="gray40",hover_color="gray25",command=self.buttonEvent)
+        self.addCourse = customtkinter.CTkButton(master=self.frameRight1,text="Agregar Curso",fg_color="gray40",hover_color="gray25",command=self.option3)
         self.addCourse.grid(row=0,column=2,pady=10,padx=5)
 
-        self.editCourse = customtkinter.CTkButton(master=self.frameRight1,text="Editar Curso",fg_color="gray40",hover_color="gray25",command=self.buttonEvent)
+        self.editCourse = customtkinter.CTkButton(master=self.frameRight1,text="Editar Curso",fg_color="gray40",hover_color="gray25",command=self.option4)
         self.editCourse.grid(row=0,column=3,pady=10,padx=5)
 
-        self.deleteCourse = customtkinter.CTkButton(master=self.frameRight1,text="Eliminar Curso",fg_color="gray40",hover_color="gray25",command=self.buttonEvent)
+        self.deleteCourse = customtkinter.CTkButton(master=self.frameRight1,text="Eliminar Curso",fg_color="gray40",hover_color="gray25",command=self.option5)
         self.deleteCourse.grid(row=0,column=4,pady=10,padx=5)
 
         self.route = customtkinter.CTkEntry(master=self.frameRight1,width=120,placeholder_text="Ruta del archivo")
         self.route.grid(row=1,column=0,columnspan=5,pady=20,padx=20,sticky="nwe")
+
+        self.getCourses.configure(state=tkinter.DISABLED)
         
+        self.panelshowCourses()
         self.tableCourses()
+        self.panelShow.grid_remove()
 
     def tableCourses(self):
         self.table = customtkinter.CTkFrame(master=self.frameRight1)
-        self.table.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(0,20),sticky="nwe")
+        self.table.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
         self.table.rowconfigure(0, weight=1)
         self.table.columnconfigure(0, weight=1)
-
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Código",width=50).grid(row=0,column=0,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Nombre").grid(row=0,column=1,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Prerrequisitos").grid(row=0,column=2,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Obligatorio").grid(row=0,column=3,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Semestre").grid(row=0,column=4,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Creditos").grid(row=0,column=5,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Estado").grid(row=0,column=6,sticky="we")
         
         self.tableData()
 
     def tableData(self):
         self.results = self.data.courses
+        
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Código",width=50).grid(row=0,column=0,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Nombre",width=250).grid(row=0,column=1,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Prerrequisitos",width=150).grid(row=0,column=2,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Obligatorio",width=150).grid(row=0,column=3,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Semestre",width=150).grid(row=0,column=4,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Creditos",width=150).grid(row=0,column=5,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Estado",width=150).grid(row=0,column=6,sticky="we")
+
         for i in range(len(self.results)):
             exec(f"self.e{i}code = customtkinter.CTkEntry(self.table,width=50)")
             exec(f"self.e{i}code.grid(row={i}+1,column=0,columnspan=1,sticky='we')")
             exec(f"self.e{i}code.insert('end',self.results[{i}].code)")
-            exec(f"self.e{i}code.configure(state=tkinter.DISABLED)")
+            #exec(f"self.e{i}code.configure(state=tkinter.DISABLED)")
 
             exec(f"self.e{i}name = customtkinter.CTkEntry(self.table,width=250)")
             exec(f"self.e{i}name.grid(row={i}+1,column=1,columnspan=1,sticky='we')")
@@ -145,10 +150,81 @@ class App(customtkinter.CTk):
             exec(f"self.e{i}state.configure(state=tkinter.DISABLED)")
 
     def panelshowCourses(self):        
-        self.panel = customtkinter.CTkFrame(master=self.frameRight1)
-        self.panel.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=20,sticky="nwe")
-        self.panel.rowconfigure(0, weight=1)
-        self.panel.columnconfigure(0, weight=1)
+        self.panelShow = customtkinter.CTkFrame(master=self.frameRight1)
+        self.panelShow.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
+        self.panelShow.rowconfigure(0, weight=1)
+        self.panelShow.columnconfigure(0, weight=1)
+
+        self.codeE = customtkinter.CTkEntry(master=self.panelShow,width=120,placeholder_text="Ingrese el Código del Curso")
+        self.codeE.grid(row=1,column=0,columnspan=6,pady=20,padx=20,sticky="nwe")
+
+        self.searchCourse = customtkinter.CTkButton(master=self.panelShow,text="Buscar Curso",fg_color="gray40",hover_color="gray25",command=self.getCode)
+        self.searchCourse.grid(row=1,column=6,pady=20,padx=(5,20),sticky="nwe")
+
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Código",width=50).grid(row=2,column=0,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Nombre",width=250).grid(row=2,column=1,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Prerrequisitos",width=150).grid(row=2,column=2,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Obligatorio",width=150).grid(row=2,column=3,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Semestre",width=150).grid(row=2,column=4,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Creditos",width=150).grid(row=2,column=5,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Estado",width=150).grid(row=2,column=6,sticky="we")
+
+    def tableDataShow(self):
+        for i in range(1):
+            exec(f"self.e{i}codeS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}codeS.grid(row={i+3},column=0,columnspan=1,sticky='we')")
+            exec(f"self.e{i}codeS.insert('end',self.courseFound.code)")
+            exec(f"self.e{i}codeS.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}nameS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}nameS.grid(row={i+3},column=1,columnspan=1,sticky='we')")
+            exec(f"self.e{i}nameS.insert('end',self.courseFound.name)")
+            exec(f"self.e{i}nameS.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}prerequisiteS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}prerequisiteS.grid(row={i+3},column=2,columnspan=1,sticky='we')")
+            exec(f"self.e{i}prerequisiteS.insert('end',self.courseFound.prerequisite)")
+            exec(f"self.e{i}prerequisiteS.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}mandatoryS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}mandatoryS.grid(row={i+3},column=3,columnspan=1,sticky='we')")
+            exec(f"self.e{i}mandatoryS.insert('end',self.courseFound.mandatory)")
+            exec(f"self.e{i}mandatoryS.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}semesterS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}semesterS.grid(row={i+3},column=4,columnspan=1,sticky='we')")
+            exec(f"self.e{i}semesterS.insert('end',self.courseFound.semester)")
+            exec(f"self.e{i}semesterS.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}creditsS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}creditsS.grid(row={i+3},column=5,columnspan=1,sticky='we')")
+            exec(f"self.e{i}creditsS.insert('end',self.courseFound.credits)")
+            exec(f"self.e{i}creditsS.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}stateS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}stateS.grid(row={i+3},column=6,columnspan=1,sticky='we')")
+            exec(f"self.e{i}stateS.insert('end',self.courseFound.state)")
+            exec(f"self.e{i}stateS.configure(state=tkinter.DISABLED)")
+
+    def getCode(self):
+        self.result = self.codeE.get()
+        if self.result == '':
+            messagebox.showinfo("Información", "Debe ingresar un Código de Curso")
+        else:
+            try:
+                self.courseFound = self.data.searchCourse(int(self.result))
+                if self.courseFound:
+                    self.tableDataShow()
+                    self.codeE.delete(0, 'end')
+                    self.codeE.insert(0,str(''))
+                else:
+                    messagebox.showinfo("Información", "El curso no existe")
+                    self.codeE.delete(0, 'end')
+                    self.codeE.insert(0,str(''))
+            except:
+                messagebox.showinfo("Información", "Debe ingresar solo números")
+                self.codeE.delete(0, 'end')
+                self.codeE.insert(0,str(''))
 
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)
@@ -167,13 +243,51 @@ class App(customtkinter.CTk):
         self.route.configure(state=tkinter.DISABLED)
 
     def option1(self):
-        pass
-        #self.panel.grid_forget()
-        #self.table.grid()
+        self.getCourses.configure(state=tkinter.DISABLED)
+        self.showCourses.configure(state=tkinter.NORMAL)
+        self.addCourse.configure(state=tkinter.NORMAL)
+        self.editCourse.configure(state=tkinter.NORMAL)
+        self.deleteCourse.configure(state=tkinter.NORMAL)
+        self.route.configure(state=tkinter.NORMAL)
+        self.route.configure(state=tkinter.DISABLED)
+
+        self.panelShow.grid_remove()
+        self.table.grid()
 
     def option2(self):
-        pass
-        #self.table.grid_forget()
+        self.getCourses.configure(state=tkinter.NORMAL)
+        self.showCourses.configure(state=tkinter.DISABLED)
+        self.addCourse.configure(state=tkinter.NORMAL)
+        self.editCourse.configure(state=tkinter.NORMAL)
+        self.deleteCourse.configure(state=tkinter.NORMAL)
+        self.route.configure(state=tkinter.DISABLED)
+
+        self.table.grid_remove()
+        self.panelShow.grid()
+
+    def option3(self):
+        self.getCourses.configure(state=tkinter.NORMAL)
+        self.showCourses.configure(state=tkinter.NORMAL)
+        self.addCourse.configure(state=tkinter.DISABLED)
+        self.editCourse.configure(state=tkinter.NORMAL)
+        self.deleteCourse.configure(state=tkinter.NORMAL)
+        self.route.configure(state=tkinter.DISABLED)
+
+    def option4(self):
+        self.getCourses.configure(state=tkinter.NORMAL)
+        self.showCourses.configure(state=tkinter.NORMAL)
+        self.addCourse.configure(state=tkinter.NORMAL)
+        self.editCourse.configure(state=tkinter.DISABLED)
+        self.deleteCourse.configure(state=tkinter.NORMAL)
+        self.route.configure(state=tkinter.DISABLED)
+
+    def option5(self):
+        self.getCourses.configure(state=tkinter.NORMAL)
+        self.showCourses.configure(state=tkinter.NORMAL)
+        self.addCourse.configure(state=tkinter.NORMAL)
+        self.editCourse.configure(state=tkinter.NORMAL)
+        self.deleteCourse.configure(state=tkinter.DISABLED)
+        self.route.configure(state=tkinter.DISABLED)
 
     def buttonEvent(self):
         pass
