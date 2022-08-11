@@ -92,6 +92,7 @@ class App(customtkinter.CTk):
         
         self.panelshowCourses()
         self.tableCourses()
+        self.panelAddCourse()
         self.panelShow.grid_remove()
 
     def tableCourses(self):
@@ -117,21 +118,27 @@ class App(customtkinter.CTk):
             exec(f"self.e{i}code = customtkinter.CTkEntry(self.table,width=50)")
             exec(f"self.e{i}code.grid(row={i}+1,column=0,columnspan=1,sticky='we')")
             exec(f"self.e{i}code.insert('end',self.results[{i}].code)")
-            #exec(f"self.e{i}code.configure(state=tkinter.DISABLED)")
+            exec(f"self.e{i}code.configure(state=tkinter.DISABLED)")
 
             exec(f"self.e{i}name = customtkinter.CTkEntry(self.table,width=250)")
             exec(f"self.e{i}name.grid(row={i}+1,column=1,columnspan=1,sticky='we')")
             exec(f"self.e{i}name.insert('end',self.results[{i}].name)")
             exec(f"self.e{i}name.configure(state=tkinter.DISABLED)")
 
+            pre = ''
+            for pr in self.results[i].prerequisite:
+                pre += pr + ' '
             exec(f"self.e{i}prerequisite = customtkinter.CTkEntry(self.table,width=150)")
             exec(f"self.e{i}prerequisite.grid(row={i}+1,column=2,columnspan=1,sticky='e')")
-            exec(f"self.e{i}prerequisite.insert('end',self.results[{i}].prerequisite)")
+            exec(f"self.e{i}prerequisite.insert('end','{pre}')")
             exec(f"self.e{i}prerequisite.configure(state=tkinter.DISABLED)")
 
             exec(f"self.e{i}mandatory = customtkinter.CTkEntry(self.table,width=150)")
             exec(f"self.e{i}mandatory.grid(row={i}+1,column=3,columnspan=1,sticky='e')")
-            exec(f"self.e{i}mandatory.insert('end',self.results[{i}].mandatory)")
+            if self.results[i].mandatory == 1:
+                exec(f"self.e{i}mandatory.insert('end','Obligatorio')")
+            else:
+                exec(f"self.e{i}mandatory.insert('end','Opcional')")
             exec(f"self.e{i}mandatory.configure(state=tkinter.DISABLED)")
 
             exec(f"self.e{i}semester = customtkinter.CTkEntry(self.table,width=150)")
@@ -146,7 +153,12 @@ class App(customtkinter.CTk):
 
             exec(f"self.e{i}state = customtkinter.CTkEntry(self.table,width=150)")
             exec(f"self.e{i}state.grid(row={i}+1,column=6,columnspan=1,sticky='e')")
-            exec(f"self.e{i}state.insert('end',self.results[{i}].state)")
+            if self.results[i].state == 0:
+                exec(f"self.e{i}state.insert('end','Aprobado')")
+            elif self.results[i].state == 1:
+                exec(f"self.e{i}state.insert('end','Cursando')")
+            else:
+                exec(f"self.e{i}state.insert('end','Pendiente')")
             exec(f"self.e{i}state.configure(state=tkinter.DISABLED)")
 
     def panelshowCourses(self):        
@@ -176,34 +188,45 @@ class App(customtkinter.CTk):
             exec(f"self.e{i}codeS.insert('end',self.courseFound.code)")
             exec(f"self.e{i}codeS.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}nameS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}nameS = customtkinter.CTkEntry(self.panelShow,width=150)")
             exec(f"self.e{i}nameS.grid(row={i+3},column=1,columnspan=1,sticky='we')")
             exec(f"self.e{i}nameS.insert('end',self.courseFound.name)")
             exec(f"self.e{i}nameS.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}prerequisiteS = customtkinter.CTkEntry(self.panelShow,width=50)")
-            exec(f"self.e{i}prerequisiteS.grid(row={i+3},column=2,columnspan=1,sticky='we')")
-            exec(f"self.e{i}prerequisiteS.insert('end',self.courseFound.prerequisite)")
-            exec(f"self.e{i}prerequisiteS.configure(state=tkinter.DISABLED)")
+            pre = ''
+            for pr in self.courseFound.prerequisite:
+                pre += pr + ' '
+            exec(f"self.e{i}prerequisite = customtkinter.CTkEntry(self.panelShow,width=150)")
+            exec(f"self.e{i}prerequisite.grid(row={i+3},column=2,columnspan=1,sticky='e')")
+            exec(f"self.e{i}prerequisite.insert('end','{pre}')")
+            exec(f"self.e{i}prerequisite.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}mandatoryS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}mandatoryS = customtkinter.CTkEntry(self.panelShow,width=150)")
             exec(f"self.e{i}mandatoryS.grid(row={i+3},column=3,columnspan=1,sticky='we')")
-            exec(f"self.e{i}mandatoryS.insert('end',self.courseFound.mandatory)")
+            if self.courseFound.mandatory == 1:
+                exec(f"self.e{i}mandatoryS.insert('end','Obligatorio')")
+            else:
+                exec(f"self.e{i}mandatoryS.insert('end','Opcional')")
             exec(f"self.e{i}mandatoryS.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}semesterS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}semesterS = customtkinter.CTkEntry(self.panelShow,width=150)")
             exec(f"self.e{i}semesterS.grid(row={i+3},column=4,columnspan=1,sticky='we')")
             exec(f"self.e{i}semesterS.insert('end',self.courseFound.semester)")
             exec(f"self.e{i}semesterS.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}creditsS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}creditsS = customtkinter.CTkEntry(self.panelShow,width=150)")
             exec(f"self.e{i}creditsS.grid(row={i+3},column=5,columnspan=1,sticky='we')")
             exec(f"self.e{i}creditsS.insert('end',self.courseFound.credits)")
             exec(f"self.e{i}creditsS.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}stateS = customtkinter.CTkEntry(self.panelShow,width=50)")
+            exec(f"self.e{i}stateS = customtkinter.CTkEntry(self.panelShow,width=150)")
             exec(f"self.e{i}stateS.grid(row={i+3},column=6,columnspan=1,sticky='we')")
-            exec(f"self.e{i}stateS.insert('end',self.courseFound.state)")
+            if self.courseFound.state == 0:
+                exec(f"self.e{i}stateS.insert('end','Aprobado')")
+            elif self.courseFound.state == 1:
+                exec(f"self.e{i}stateS.insert('end','Cursando')")
+            else:
+                exec(f"self.e{i}stateS.insert('end','Pendiente')")
             exec(f"self.e{i}stateS.configure(state=tkinter.DISABLED)")
 
     def getCode(self):
