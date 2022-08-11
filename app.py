@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import filedialog as fd
 from tkinter import messagebox
-from turtle import width
+from idlelib.tooltip import Hovertip
 import customtkinter
 from readData import Controller
 
@@ -268,6 +268,7 @@ class App(customtkinter.CTk):
 
         self.prerequisiteAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Prerrequisito")
         self.prerequisiteAdd.grid(row=2,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+        self.myTip = Hovertip(self.prerequisiteAdd,'\n     Ingrese los prerrequisitos separados por punto y coma     \n')
 
         self.creditsAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Creditos")
         self.creditsAdd.grid(row=2,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
@@ -279,12 +280,53 @@ class App(customtkinter.CTk):
         self.mandatoryAdd.grid(row=3,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
         self.mandatoryAdd.set("Opcionalidad")
 
-        self.mandatoryAdd = customtkinter.CTkComboBox(master=self.panelAdd,values=["Aprobado","Cursando","Pendiente"],width=400,height=40)
-        self.mandatoryAdd.grid(row=4,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nwe")
-        self.mandatoryAdd.set("Estado")
+        self.stateAdd = customtkinter.CTkComboBox(master=self.panelAdd,values=["Aprobado","Cursando","Pendiente"],width=400,height=40)
+        self.stateAdd.grid(row=4,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nwe")
+        self.stateAdd.set("Estado")
 
-        self.searchCourse = customtkinter.CTkButton(master=self.panelAdd,text="Agregar Curso",width=800,height=40,text_font=("Roboto Medium",12),command=self.getCode)
-        self.searchCourse.grid(row=9,column=0,columnspan=3,pady=(20,80),padx=(120,0),sticky="nwe")
+        self.btnAddC = customtkinter.CTkButton(master=self.panelAdd,text="Agregar Curso",width=800,height=40,text_font=("Roboto Medium",12),command=self.addC)
+        self.btnAddC.grid(row=9,column=0,columnspan=3,pady=(20,80),padx=(120,0),sticky="nwe")
+
+    def addC(self):
+        code = self.codeAdd.get()
+        name = self.nameAdd.get()
+        prerequisite = self.prerequisiteAdd.get()
+        credits = self.creditsAdd.get()
+        semester = self.semesterAdd.get()
+        mandatory = self.mandatoryAdd.get()
+        state = self.stateAdd.get()
+
+        if mandatory == 'Opcional':
+            mandatory = 1
+        else:
+            mandatory = 0
+
+        if state == 'Aprobado':
+            state = 0
+        elif state == 'Cursando':
+            state = 1
+        else:
+            state = -1
+            
+        if code == '' or name == '' or credits == '' or semester == '' or mandatory == 'Opcionalidad' or state == 'Estado':
+            messagebox.showinfo("Información", "Todos los campos son obligatorios")
+        else:
+            creado = self.data.addCourse(code,name,prerequisite,mandatory,semester,credits,state)
+            if creado:
+                messagebox.showinfo("Información", "Curso agregado exitosamente")
+                self.tableCourses()
+                self.table.grid_remove()
+
+                self.codeAdd.delete(0, 'end')
+                self.nameAdd.delete(0, 'end')
+                self.prerequisiteAdd.delete(0, 'end')
+                self.creditsAdd.delete(0, 'end')
+                self.semesterAdd.delete(0, 'end')
+                self.mandatoryAdd.set("Opcionalidad")
+                self.stateAdd.set("Estado")
+            else:
+                messagebox.showinfo("Información", "El curso ya existe en el sistema, código duplicado")
+                self.codeAdd.delete(0, 'end')
 
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)
