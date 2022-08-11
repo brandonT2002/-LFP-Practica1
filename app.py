@@ -71,22 +71,22 @@ class App(customtkinter.CTk):
         self.data.config(font=('Roboto Medium',13))
         """
         self.getCourses = customtkinter.CTkButton(master=self.frameRight1,text="Listar Cursos",fg_color="gray40",hover_color="gray25",command=self.option1)
-        self.getCourses.grid(row=0,column=0,pady=10,padx=5)
+        self.getCourses.grid(row=0,column=0,pady=10,padx=(20,5),sticky="nwe")
 
         self.showCourses = customtkinter.CTkButton(master=self.frameRight1,text="Mostrar Cursos",fg_color="gray40",hover_color="gray25",command=self.option2)
-        self.showCourses.grid(row=0,column=1,pady=10,padx=5)
+        self.showCourses.grid(row=0,column=1,pady=10,padx=5,sticky="nwe")
 
         self.addCourse = customtkinter.CTkButton(master=self.frameRight1,text="Agregar Curso",fg_color="gray40",hover_color="gray25",command=self.option3)
-        self.addCourse.grid(row=0,column=2,pady=10,padx=5)
+        self.addCourse.grid(row=0,column=2,pady=10,padx=5,sticky="nwe")
 
         self.editCourse = customtkinter.CTkButton(master=self.frameRight1,text="Editar Curso",fg_color="gray40",hover_color="gray25",command=self.option4)
-        self.editCourse.grid(row=0,column=3,pady=10,padx=5)
+        self.editCourse.grid(row=0,column=3,pady=10,padx=5,sticky="nwe")
 
         self.deleteCourse = customtkinter.CTkButton(master=self.frameRight1,text="Eliminar Curso",fg_color="gray40",hover_color="gray25",command=self.option5)
-        self.deleteCourse.grid(row=0,column=4,pady=10,padx=5)
+        self.deleteCourse.grid(row=0,column=4,pady=10,padx=(5,20),sticky="nwe")
 
         self.route = customtkinter.CTkEntry(master=self.frameRight1,width=120,placeholder_text="Ruta del archivo")
-        self.route.grid(row=1,column=0,columnspan=5,pady=20,padx=20,sticky="nwe")
+        self.route.grid(row=1,column=0,columnspan=5,pady=20,padx=20,sticky="we")
 
         self.getCourses.configure(state=tkinter.DISABLED)
         
@@ -94,6 +94,7 @@ class App(customtkinter.CTk):
         self.tableCourses()
         self.panelAddCourse()
         self.panelShow.grid_remove()
+        self.panelAdd.grid_remove()
 
     def tableCourses(self):
         self.table = customtkinter.CTkFrame(master=self.frameRight1)
@@ -249,6 +250,36 @@ class App(customtkinter.CTk):
                 self.codeE.delete(0, 'end')
                 self.codeE.insert(0,str(''))
 
+    def panelAddCourse(self):        
+        self.panelAdd = customtkinter.CTkFrame(master=self.frameRight1)
+        self.panelAdd.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
+        self.panelAdd.rowconfigure(0, weight=1)
+        self.panelAdd.columnconfigure(0, weight=1)
+
+        self.titleAdd = customtkinter.CTkLabel(master=self.panelAdd,text="Agregar Nuevo Curso",text_font=("Roboto Medium",16))
+        self.titleAdd.grid(row=0,column=0,columnspan=7,pady=(20,10),padx=10)
+
+        self.codeAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Código")
+        self.codeAdd.grid(row=1,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+
+        self.nameAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Nombre")
+        self.nameAdd.grid(row=1,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+
+        self.prerequisiteAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Prerrequisito")
+        self.prerequisiteAdd.grid(row=2,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+
+        self.mandatoryAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Obligatorio")
+        self.mandatoryAdd.grid(row=2,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+
+        self.semesterAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Semestre")
+        self.semesterAdd.grid(row=3,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+
+        self.creditsAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Creditos")
+        self.creditsAdd.grid(row=3,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+
+        self.searchCourse = customtkinter.CTkButton(master=self.panelAdd,text="Agregar Curso",width=800,height=40,text_font=("Roboto Medium",12),command=self.getCode)
+        self.searchCourse.grid(row=9,column=0,columnspan=3,pady=(20,80),padx=(120,0),sticky="nwe")
+
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)
         filetypes = (
@@ -275,6 +306,7 @@ class App(customtkinter.CTk):
         self.route.configure(state=tkinter.DISABLED)
 
         self.panelShow.grid_remove()
+        self.panelAdd.grid_remove()
         self.table.grid()
 
     def option2(self):
@@ -286,6 +318,7 @@ class App(customtkinter.CTk):
         self.route.configure(state=tkinter.DISABLED)
 
         self.table.grid_remove()
+        self.panelAdd.grid_remove()
         self.panelShow.grid()
 
     def option3(self):
@@ -295,6 +328,10 @@ class App(customtkinter.CTk):
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.NORMAL)
         self.route.configure(state=tkinter.DISABLED)
+
+        self.table.grid_remove()
+        self.panelShow.grid_remove()
+        self.panelAdd.grid()
 
     def option4(self):
         self.getCourses.configure(state=tkinter.NORMAL)
