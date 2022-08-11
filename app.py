@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import filedialog as fd
 from tkinter import messagebox
+from turtle import width
 import customtkinter
 from readData import Controller
 
@@ -71,22 +72,22 @@ class App(customtkinter.CTk):
         self.data.config(font=('Roboto Medium',13))
         """
         self.getCourses = customtkinter.CTkButton(master=self.frameRight1,text="Listar Cursos",fg_color="gray40",hover_color="gray25",command=self.option1)
-        self.getCourses.grid(row=0,column=0,pady=10,padx=(20,5),sticky="nwe")
+        self.getCourses.grid(row=0,column=0,pady=(20,0),padx=(20,5),sticky="nwe")
 
         self.showCourses = customtkinter.CTkButton(master=self.frameRight1,text="Mostrar Cursos",fg_color="gray40",hover_color="gray25",command=self.option2)
-        self.showCourses.grid(row=0,column=1,pady=10,padx=5,sticky="nwe")
+        self.showCourses.grid(row=0,column=1,pady=(20,0),padx=5,sticky="nwe")
 
         self.addCourse = customtkinter.CTkButton(master=self.frameRight1,text="Agregar Curso",fg_color="gray40",hover_color="gray25",command=self.option3)
-        self.addCourse.grid(row=0,column=2,pady=10,padx=5,sticky="nwe")
+        self.addCourse.grid(row=0,column=2,pady=(20,0),padx=5,sticky="nwe")
 
         self.editCourse = customtkinter.CTkButton(master=self.frameRight1,text="Editar Curso",fg_color="gray40",hover_color="gray25",command=self.option4)
-        self.editCourse.grid(row=0,column=3,pady=10,padx=5,sticky="nwe")
+        self.editCourse.grid(row=0,column=3,pady=(20,0),padx=5,sticky="nwe")
 
         self.deleteCourse = customtkinter.CTkButton(master=self.frameRight1,text="Eliminar Curso",fg_color="gray40",hover_color="gray25",command=self.option5)
-        self.deleteCourse.grid(row=0,column=4,pady=10,padx=(5,20),sticky="nwe")
+        self.deleteCourse.grid(row=0,column=4,pady=(20,0),padx=(5,20),sticky="nwe")
 
         self.route = customtkinter.CTkEntry(master=self.frameRight1,width=120,placeholder_text="Ruta del archivo")
-        self.route.grid(row=1,column=0,columnspan=5,pady=20,padx=20,sticky="we")
+        self.route.grid(row=1,column=0,columnspan=5,pady=(15,10),padx=20,sticky="nwe")
 
         self.getCourses.configure(state=tkinter.DISABLED)
         
@@ -110,7 +111,7 @@ class App(customtkinter.CTk):
         self.text = customtkinter.CTkLabel(master=self.table,text = "Código",width=50).grid(row=0,column=0,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.table,text = "Nombre",width=250).grid(row=0,column=1,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.table,text = "Prerrequisitos",width=150).grid(row=0,column=2,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Obligatorio",width=150).grid(row=0,column=3,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Opcionalidad",width=150).grid(row=0,column=3,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.table,text = "Semestre",width=150).grid(row=0,column=4,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.table,text = "Creditos",width=150).grid(row=0,column=5,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.table,text = "Estado",width=150).grid(row=0,column=6,sticky="we")
@@ -177,7 +178,7 @@ class App(customtkinter.CTk):
         self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Código",width=50).grid(row=2,column=0,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Nombre",width=250).grid(row=2,column=1,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Prerrequisitos",width=150).grid(row=2,column=2,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Obligatorio",width=150).grid(row=2,column=3,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Opcionalidad",width=150).grid(row=2,column=3,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Semestre",width=150).grid(row=2,column=4,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Creditos",width=150).grid(row=2,column=5,sticky="we")
         self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Estado",width=150).grid(row=2,column=6,sticky="we")
@@ -268,14 +269,19 @@ class App(customtkinter.CTk):
         self.prerequisiteAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Prerrequisito")
         self.prerequisiteAdd.grid(row=2,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
 
-        self.mandatoryAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Obligatorio")
-        self.mandatoryAdd.grid(row=2,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.creditsAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Creditos")
+        self.creditsAdd.grid(row=2,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
 
         self.semesterAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Semestre")
         self.semesterAdd.grid(row=3,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
 
-        self.creditsAdd = customtkinter.CTkEntry(master=self.panelAdd,width=400,height=40,placeholder_text="Creditos")
-        self.creditsAdd.grid(row=3,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.mandatoryAdd = customtkinter.CTkComboBox(master=self.panelAdd,values=["Obligatorio","Opcional"],width=400,height=40)
+        self.mandatoryAdd.grid(row=3,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.mandatoryAdd.set("Opcionalidad")
+
+        self.mandatoryAdd = customtkinter.CTkComboBox(master=self.panelAdd,values=["Aprobado","Cursando","Pendiente"],width=400,height=40)
+        self.mandatoryAdd.grid(row=4,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nwe")
+        self.mandatoryAdd.set("Estado")
 
         self.searchCourse = customtkinter.CTkButton(master=self.panelAdd,text="Agregar Curso",width=800,height=40,text_font=("Roboto Medium",12),command=self.getCode)
         self.searchCourse.grid(row=9,column=0,columnspan=3,pady=(20,80),padx=(120,0),sticky="nwe")
