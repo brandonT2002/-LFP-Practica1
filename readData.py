@@ -19,12 +19,12 @@ class Controller:
             return None
 
     def addCourse(self,code,name,prerequisite,mandatory,semester,credits,state):
-        course = self.checkCourse(code)
-        if course:
-            print('El libro ya existe')
-        else:
-            self.courses.append(Course(code,name,prerequisite,mandatory,semester,credits,state))
-            print('Curso creado exitosamente')
+        if self.checkCourse(code):
+            print('el curso ya existe')
+            return False
+        self.courses.append(Course(code,name,prerequisite.split(';'),mandatory,semester,credits,state))
+        print('curso creado')
+        return True
 
     def checkCourse(self,code):
         for i in self.courses:
