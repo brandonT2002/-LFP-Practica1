@@ -311,22 +311,27 @@ class App(customtkinter.CTk):
         if code == '' or name == '' or credits == '' or semester == '' or mandatory == 'Opcionalidad' or state == 'Estado':
             messagebox.showinfo("Información", "Todos los campos son obligatorios")
         else:
-            creado = self.data.addCourse(code,name,prerequisite,mandatory,semester,credits,state)
-            if creado:
-                messagebox.showinfo("Información", "Curso agregado exitosamente")
-                self.tableCourses()
-                self.table.grid_remove()
+            try:
+                int(code)
+                int(credits)
+                int(semester)
+                if self.data.addCourse(code,name,prerequisite,mandatory,semester,credits,state):
+                    messagebox.showinfo("Información", "Curso agregado exitosamente")
+                    self.tableCourses()
+                    self.table.grid_remove()
 
-                self.codeAdd.delete(0, 'end')
-                self.nameAdd.delete(0, 'end')
-                self.prerequisiteAdd.delete(0, 'end')
-                self.creditsAdd.delete(0, 'end')
-                self.semesterAdd.delete(0, 'end')
-                self.mandatoryAdd.set("Opcionalidad")
-                self.stateAdd.set("Estado")
-            else:
-                messagebox.showinfo("Información", "El curso ya existe en el sistema, código duplicado")
-                self.codeAdd.delete(0, 'end')
+                    self.codeAdd.delete(0, 'end')
+                    self.nameAdd.delete(0, 'end')
+                    self.prerequisiteAdd.delete(0, 'end')
+                    self.creditsAdd.delete(0, 'end')
+                    self.semesterAdd.delete(0, 'end')
+                    self.mandatoryAdd.set("Opcionalidad")
+                    self.stateAdd.set("Estado")
+                else:
+                    messagebox.showinfo("Información", "El curso ya existe en el sistema, código duplicado")
+                    self.codeAdd.delete(0, 'end')
+            except: 
+                messagebox.showinfo("Información", "Datos Incorrectos")
 
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)

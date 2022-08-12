@@ -20,10 +20,8 @@ class Controller:
 
     def addCourse(self,code,name,prerequisite,mandatory,semester,credits,state):
         if self.checkCourse(code):
-            print('el curso ya existe')
             return False
         self.courses.append(Course(code,name,prerequisite.split(';'),mandatory,semester,credits,state))
-        print('curso creado')
         return True
 
     def checkCourse(self,code):
