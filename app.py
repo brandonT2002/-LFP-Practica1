@@ -343,8 +343,8 @@ class App(customtkinter.CTk):
         self.panelEdit.rowconfigure(0, weight=1)
         self.panelEdit.columnconfigure(0, weight=1)
 
-        self.codeEdit = customtkinter.CTkEntry(master=self.panelEdit,width=120,height=40,placeholder_text="Ingrese el Código del Curso")
-        self.codeEdit.grid(row=1,column=0,columnspan=6,pady=20,padx=20,sticky="nwe")
+        self.codeEd = customtkinter.CTkEntry(master=self.panelEdit,width=120,height=40,placeholder_text="Ingrese el Código del Curso")
+        self.codeEd.grid(row=1,column=0,columnspan=6,pady=20,padx=20,sticky="nwe")
 
         self.searchCEdit = customtkinter.CTkButton(master=self.panelEdit,text="Buscar Curso",height=40,fg_color="gray40",hover_color="gray25",command=self.btnSearchEdit)
         self.searchCEdit.grid(row=1,column=6,pady=20,padx=(5,20),sticky="nwe")
@@ -358,50 +358,59 @@ class App(customtkinter.CTk):
         titleE = customtkinter.CTkLabel(master=self.formEdit,text="Editar Curso",text_font=("Roboto Medium",16))
         titleE.grid(row=2,column=0,columnspan=7,pady=(20,10),padx=10)
 
-        self.codeAdd = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Código")
-        self.codeAdd.grid(row=3,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+        self.codeEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Código")
+        self.codeEdit.grid(row=3,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
 
-        self.nameAdd = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Nombre")
-        self.nameAdd.grid(row=3,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.nameEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Nombre")
+        self.nameEdit.grid(row=3,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
 
-        self.prerequisiteAdd = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Prerrequisito")
-        self.prerequisiteAdd.grid(row=4,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+        self.prerequisiteEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Prerrequisito")
+        self.prerequisiteEdit.grid(row=4,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
         self.myTip = Hovertip(self.prerequisiteAdd,'\n     Ingrese los prerrequisitos separados por punto y coma     \n')
 
-        self.creditsAdd = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Creditos")
-        self.creditsAdd.grid(row=4,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.creditsEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Creditos")
+        self.creditsEdit.grid(row=4,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
 
-        self.semesterAdd = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Semestre")
-        self.semesterAdd.grid(row=5,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+        self.semesterEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Semestre")
+        self.semesterEdit.grid(row=5,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
 
-        self.mandatoryAdd = customtkinter.CTkComboBox(master=self.formEdit,values=["Obligatorio","Opcional"],width=400,height=40)
-        self.mandatoryAdd.grid(row=5,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
-        self.mandatoryAdd.set("Opcionalidad")
+        self.mandatoryEdit = customtkinter.CTkComboBox(master=self.formEdit,values=["Obligatorio","Opcional"],width=400,height=40)
+        self.mandatoryEdit.grid(row=5,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.mandatoryEdit.set("Opcionalidad")
 
-        self.stateAdd = customtkinter.CTkComboBox(master=self.formEdit,values=["Aprobado","Cursando","Pendiente"],width=400,height=40)
-        self.stateAdd.grid(row=6,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nwe")
-        self.stateAdd.set("Estado")
+        self.stateEdit = customtkinter.CTkComboBox(master=self.formEdit,values=["Aprobado","Cursando","Pendiente"],width=400,height=40)
+        self.stateEdit.grid(row=6,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nwe")
+        self.stateEdit.set("Estado")
 
-        self.btnAddC = customtkinter.CTkButton(master=self.formEdit,text="Agregar Curso",width=800,height=40,text_font=("Roboto Medium",12),command=self.addC)
+        self.btnAddC = customtkinter.CTkButton(master=self.formEdit,text="Guardar",width=800,height=40,text_font=("Roboto Medium",12),command=self.addC)
         self.btnAddC.grid(row=7,column=0,columnspan=3,pady=(20,80),padx=(120,0),sticky="nwe")
 
     def btnSearchEdit(self):
-        code = self.codeEdit.get()
-        if code == '':
+        codeV = self.codeEd.get()
+        if codeV == '':
             messagebox.showinfo("Información", "Debe ingresar un código de curso")
         else:
             try:
-                if self.data.verifyCourse(int(code)):
+                course = self.data.checkCourse(int(codeV))
+                if course:
                     self.formEdit.grid()
-                    self.codeEdit.delete(0, '')
+                    self.codeEd.delete(0, 'end')
+
+                    self.codeEdit.insert(0,str(course.code))
+                    self.nameEdit.insert(0,str(course.name))
+                    self.prerequisiteEdit.insert(0,str(course.prerequisite))
+                    self.creditsEdit.insert(0,str(course.credits))
+                    self.semesterEdit.insert(0,str(course.semester))
+                    self.mandatoryEdit.insert(0,str(course.mandatory))
+                    self.stateEdit.insert(0,str(course.state))
                 else:
                     messagebox.showinfo("Información", "El curso no existe")
-                    self.codeEdit.delete(0, 'end')
-                    self.codeEdit.insert(0,str(''))
+                    self.codeEd.delete(0, 'end')
+                    self.codeEd.insert(0,str(''))
             except:
                 messagebox.showinfo("Información", "Debe ingresar solo números")
-                self.codeEdit.delete(0, 'end')
-                self.codeEdit.insert(0,str(''))
+                self.codeEd.delete(0, 'end')
+                self.codeEd.insert(0,str(''))
 
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)
@@ -431,6 +440,7 @@ class App(customtkinter.CTk):
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
+        self.formEdit.grid_remove()
         self.table.grid()
 
     def option2(self):
@@ -444,6 +454,7 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
+        self.formEdit.grid_remove()
         self.panelShow.grid()
 
     def option3(self):
@@ -457,6 +468,7 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelShow.grid_remove()
         self.panelEdit.grid_remove()
+        self.formEdit.grid_remove()
         self.panelAdd.grid()
 
     def option4(self):
@@ -470,6 +482,7 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
+        self.formEdit.grid_remove()
         self.panelEdit.grid()
 
     def option5(self):
