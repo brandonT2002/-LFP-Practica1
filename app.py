@@ -56,7 +56,7 @@ class App(customtkinter.CTk):
         self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Conteo de Creditos",command=self.buttonEvent)
         self.credits.grid(row=4,column=0,pady=10,padx=20)
 
-        self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Salir",fg_color="#D35B58",hover_color="#C77C78",command=self.quit)
+        self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Salir",fg_color="#DE2828",hover_color="red",command=self.quit)
         self.credits.grid(row=9,column=0,pady=10,padx=20)
 
     def panelManageCourses(self):
@@ -95,8 +95,6 @@ class App(customtkinter.CTk):
         self.tableCourses()
         self.panelAddCourse()
         self.panelEditCourses()
-        self.formEditCourses()
-        self.formEdit.grid_remove()
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
@@ -141,10 +139,12 @@ class App(customtkinter.CTk):
 
             exec(f"self.e{i}mandatory = customtkinter.CTkEntry(self.table,width=150)")
             exec(f"self.e{i}mandatory.grid(row={i}+1,column=3,columnspan=1,sticky='e')")
-            if self.results[i].mandatory == 1:
+            if int(self.results[i].mandatory) == 1:
                 exec(f"self.e{i}mandatory.insert('end','Obligatorio')")
-            else:
+            elif int(self.results[i].mandatory) == 0:
                 exec(f"self.e{i}mandatory.insert('end','Opcional')")
+            else:
+                exec(f"self.e{i}mandatory.insert('end','Error')")
             exec(f"self.e{i}mandatory.configure(state=tkinter.DISABLED)")
 
             exec(f"self.e{i}semester = customtkinter.CTkEntry(self.table,width=150)")
@@ -159,12 +159,14 @@ class App(customtkinter.CTk):
 
             exec(f"self.e{i}state = customtkinter.CTkEntry(self.table,width=150)")
             exec(f"self.e{i}state.grid(row={i}+1,column=6,columnspan=1,sticky='e')")
-            if self.results[i].state == 0:
+            if int(self.results[i].state) == 0:
                 exec(f"self.e{i}state.insert('end','Aprobado')")
-            elif self.results[i].state == 1:
+            elif int(self.results[i].state) == 1:
                 exec(f"self.e{i}state.insert('end','Cursando')")
-            else:
+            elif int(self.results[i].state) == -1:
                 exec(f"self.e{i}state.insert('end','Pendiente')")
+            else:
+                exec(f"self.e{i}state.insert('end','Error')")
             exec(f"self.e{i}state.configure(state=tkinter.DISABLED)")
 
     def panelshowCourses(self):        
@@ -209,10 +211,12 @@ class App(customtkinter.CTk):
 
             exec(f"self.e{i}mandatoryS = customtkinter.CTkEntry(self.panelShow,width=150)")
             exec(f"self.e{i}mandatoryS.grid(row={i+3},column=3,columnspan=1,sticky='we')")
-            if self.courseFound.mandatory == 1:
+            if int(self.courseFound.mandatory) == 1:
                 exec(f"self.e{i}mandatoryS.insert('end','Obligatorio')")
-            else:
+            elif int(self.courseFound.mandatory) == 0:
                 exec(f"self.e{i}mandatoryS.insert('end','Opcional')")
+            else:
+                exec(f"self.e{i}mandatoryS.insert('end','Error')")
             exec(f"self.e{i}mandatoryS.configure(state=tkinter.DISABLED)")
 
             exec(f"self.e{i}semesterS = customtkinter.CTkEntry(self.panelShow,width=150)")
@@ -227,12 +231,14 @@ class App(customtkinter.CTk):
 
             exec(f"self.e{i}stateS = customtkinter.CTkEntry(self.panelShow,width=150)")
             exec(f"self.e{i}stateS.grid(row={i+3},column=6,columnspan=1,sticky='we')")
-            if self.courseFound.state == 0:
+            if int(self.courseFound.state) == 0:
                 exec(f"self.e{i}stateS.insert('end','Aprobado')")
-            elif self.courseFound.state == 1:
+            elif int(self.courseFound.state) == 1:
                 exec(f"self.e{i}stateS.insert('end','Cursando')")
-            else:
+            elif int(self.courseFound.state) == -1:
                 exec(f"self.e{i}stateS.insert('end','Pendiente')")
+            else:
+                exec(f"self.e{i}stateS.insert('end','Error')")
             exec(f"self.e{i}stateS.configure(state=tkinter.DISABLED)")
 
     def getCode(self):
@@ -257,7 +263,7 @@ class App(customtkinter.CTk):
 
     def panelAddCourse(self):        
         self.panelAdd = customtkinter.CTkFrame(master=self.frameRight1)
-        self.panelAdd.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
+        self.panelAdd.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nswe")
         self.panelAdd.rowconfigure(0, weight=1)
         self.panelAdd.columnconfigure(0, weight=1)
 
@@ -339,7 +345,7 @@ class App(customtkinter.CTk):
 
     def panelEditCourses(self):        
         self.panelEdit = customtkinter.CTkFrame(master=self.frameRight1)
-        self.panelEdit.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(0,20),sticky="nwe")
+        self.panelEdit.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nswe")
         self.panelEdit.rowconfigure(0, weight=1)
         self.panelEdit.columnconfigure(0, weight=1)
 
@@ -349,68 +355,179 @@ class App(customtkinter.CTk):
         self.searchCEdit = customtkinter.CTkButton(master=self.panelEdit,text="Buscar Curso",height=40,fg_color="gray40",hover_color="gray25",command=self.btnSearchEdit)
         self.searchCEdit.grid(row=1,column=6,pady=20,padx=(5,20),sticky="nwe")
 
-    def formEditCourses(self):
-        self.formEdit = customtkinter.CTkFrame(master=self.frameRight1)
-        self.formEdit.grid(row=4,column=0,columnspan=5,rowspan=5,padx=20,pady=20,sticky="swe")
-        self.formEdit.rowconfigure(0, weight=1)
-        self.formEdit.columnconfigure(0, weight=1)
-
-        titleE = customtkinter.CTkLabel(master=self.formEdit,text="Editar Curso",text_font=("Roboto Medium",16))
+        titleE = customtkinter.CTkLabel(master=self.panelEdit,text="Editar Curso",text_font=("Roboto Medium",16))
         titleE.grid(row=2,column=0,columnspan=7,pady=(20,10),padx=10)
 
-        self.codeEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Código")
-        self.codeEdit.grid(row=3,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+        self.codeEdit = customtkinter.CTkEntry(master=self.panelEdit,width=400,height=40,placeholder_text="Código")
+        self.codeEdit.grid(row=3,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nw")
+        self.codeEdit.configure(state=tkinter.DISABLED)
 
-        self.nameEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Nombre")
-        self.nameEdit.grid(row=3,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.nameEdit = customtkinter.CTkEntry(master=self.panelEdit,width=400,height=40,placeholder_text="Nombre")
+        self.nameEdit.grid(row=3,column=4,columnspan=3,pady=(20,10),padx=(0,120),sticky="ne")
+        self.nameEdit.configure(state=tkinter.DISABLED)
 
-        self.prerequisiteEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Prerrequisito")
-        self.prerequisiteEdit.grid(row=4,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
-        self.myTip = Hovertip(self.prerequisiteAdd,'\n     Ingrese los prerrequisitos separados por punto y coma     \n')
+        self.prerequisiteEdit = customtkinter.CTkEntry(master=self.panelEdit,width=400,height=40,placeholder_text="Prerrequisito")
+        self.prerequisiteEdit.grid(row=4,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nw")
+        self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+        self.myTip = Hovertip(self.prerequisiteEdit,'\n     Ingrese los prerrequisitos separados por punto y coma     \n')
 
-        self.creditsEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Creditos")
-        self.creditsEdit.grid(row=4,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.creditsEdit = customtkinter.CTkEntry(master=self.panelEdit,width=400,height=40,placeholder_text="Creditos")
+        self.creditsEdit.grid(row=4,column=4,columnspan=3,pady=(20,10),padx=(0,120),sticky="ne")
+        self.creditsEdit.configure(state=tkinter.DISABLED)
 
-        self.semesterEdit = customtkinter.CTkEntry(master=self.formEdit,width=400,height=40,placeholder_text="Semestre")
-        self.semesterEdit.grid(row=5,column=0,columnspan=2,pady=(20,10),padx=(120,0),sticky="nw")
+        self.semesterEdit = customtkinter.CTkEntry(master=self.panelEdit,width=400,height=40,placeholder_text="Semestre")
+        self.semesterEdit.grid(row=5,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nw")
+        self.semesterEdit.configure(state=tkinter.DISABLED)
 
-        self.mandatoryEdit = customtkinter.CTkComboBox(master=self.formEdit,values=["Obligatorio","Opcional"],width=400,height=40)
-        self.mandatoryEdit.grid(row=5,column=2,columnspan=2,pady=(20,10),padx=(0,120),sticky="ne")
+        self.mandatoryEdit = customtkinter.CTkComboBox(master=self.panelEdit,values=["Obligatorio","Opcional"],width=400,height=40)
+        self.mandatoryEdit.grid(row=5,column=4,columnspan=3,pady=(20,10),padx=(0,120),sticky="ne")
         self.mandatoryEdit.set("Opcionalidad")
+        self.mandatoryEdit.configure(state=tkinter.DISABLED)
 
-        self.stateEdit = customtkinter.CTkComboBox(master=self.formEdit,values=["Aprobado","Cursando","Pendiente"],width=400,height=40)
-        self.stateEdit.grid(row=6,column=0,columnspan=3,pady=(20,10),padx=(120,0),sticky="nwe")
+        self.stateEdit = customtkinter.CTkComboBox(master=self.panelEdit,values=["Aprobado","Cursando","Pendiente"],width=400,height=40)
+        self.stateEdit.grid(row=6,column=0,columnspan=7,pady=(20,10),padx=(120,120),sticky="nwe")
         self.stateEdit.set("Estado")
+        self.stateEdit.configure(state=tkinter.DISABLED)
 
-        self.btnAddC = customtkinter.CTkButton(master=self.formEdit,text="Guardar",width=800,height=40,text_font=("Roboto Medium",12),command=self.addC)
-        self.btnAddC.grid(row=7,column=0,columnspan=3,pady=(20,80),padx=(120,0),sticky="nwe")
+        self.btnEdit = customtkinter.CTkButton(master=self.panelEdit,text="Editar",width=400,height=40,text_font=("Roboto Medium",12))
+        self.btnEdit.grid(row=7,column=0,columnspan=7,pady=(20,80),padx=(120,120),sticky="nwe")
+        self.btnEdit.configure(state=tkinter.DISABLED)
 
     def btnSearchEdit(self):
         codeV = self.codeEd.get()
         if codeV == '':
             messagebox.showinfo("Información", "Debe ingresar un código de curso")
+
+            self.codeEdit.configure(state=tkinter.NORMAL)
+            self.nameEdit.configure(state=tkinter.NORMAL)
+            self.prerequisiteEdit.configure(state=tkinter.NORMAL)
+            self.creditsEdit.configure(state=tkinter.NORMAL)
+            self.semesterEdit.configure(state=tkinter.NORMAL)
+            self.mandatoryEdit.configure(state=tkinter.NORMAL)
+            self.stateEdit.configure(state=tkinter.NORMAL)
+            self.codeEdit.delete(0, 'end')
+            self.nameEdit.delete(0, 'end')
+            self.prerequisiteEdit.delete(0, 'end')
+            self.creditsEdit.delete(0, 'end')
+            self.semesterEdit.delete(0, 'end')
+            self.mandatoryEdit.set("Opcionalidad")
+            self.stateEdit.set("Estado")
+            self.codeEdit.configure(state=tkinter.DISABLED)
+            self.nameEdit.configure(state=tkinter.DISABLED)
+            self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+            self.creditsEdit.configure(state=tkinter.DISABLED)
+            self.semesterEdit.configure(state=tkinter.DISABLED)
+            self.mandatoryEdit.configure(state=tkinter.DISABLED)
+            self.stateEdit.configure(state=tkinter.DISABLED)
+            self.btnEdit.configure(state=tkinter.DISABLED)
         else:
             try:
                 course = self.data.checkCourse(int(codeV))
                 if course:
-                    self.formEdit.grid()
                     self.codeEd.delete(0, 'end')
+                    self.codeEd.insert(0,'')
+
+                    self.codeEdit.configure(state=tkinter.NORMAL)
+                    self.nameEdit.configure(state=tkinter.NORMAL)
+                    self.prerequisiteEdit.configure(state=tkinter.NORMAL)
+                    self.creditsEdit.configure(state=tkinter.NORMAL)
+                    self.semesterEdit.configure(state=tkinter.NORMAL)
+                    self.mandatoryEdit.configure(state=tkinter.NORMAL)
+                    self.stateEdit.configure(state=tkinter.NORMAL)
+
+                    self.codeEdit.delete(0,'end')
+                    self.nameEdit.delete(0,'end')
+                    self.prerequisiteEdit.delete(0,'end')
+                    self.creditsEdit.delete(0,'end')
+                    self.semesterEdit.delete(0,'end')
+
+                    pre = ''
+                    for pr in course.prerequisite:
+                        pre += pr + ' '
 
                     self.codeEdit.insert(0,str(course.code))
                     self.nameEdit.insert(0,str(course.name))
-                    self.prerequisiteEdit.insert(0,str(course.prerequisite))
+                    self.prerequisiteEdit.insert(0,str(pre))
                     self.creditsEdit.insert(0,str(course.credits))
                     self.semesterEdit.insert(0,str(course.semester))
-                    self.mandatoryEdit.insert(0,str(course.mandatory))
-                    self.stateEdit.insert(0,str(course.state))
+                    if int(course.mandatory) == 1:
+                        self.mandatoryEdit.set('Obligatorio')
+                    elif int(course.mandatory) == 0:
+                        self.mandatoryEdit.set('Opcional')
+                    else:
+                        self.mandatoryEdit.set('Error')
+
+                    if int(course.state) == 0:
+                        self.stateEdit.set('Aprobado')
+                    elif int(course.state) == 1:
+                        self.stateEdit.set('Cursando')
+                    elif int(course.state) == -1:
+                        self.stateEdit.set('Pendiente')
+                    else:
+                        self.stateEdit.set('Error')
+
+                    self.codeEdit.configure(state=tkinter.DISABLED)
+                    self.nameEdit.configure(state=tkinter.DISABLED)
+                    self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+                    self.creditsEdit.configure(state=tkinter.DISABLED)
+                    self.semesterEdit.configure(state=tkinter.DISABLED)
+                    self.mandatoryEdit.configure(state=tkinter.DISABLED)
+                    self.stateEdit.configure(state=tkinter.DISABLED)
+                    self.btnEdit.configure(state=tkinter.NORMAL)
                 else:
                     messagebox.showinfo("Información", "El curso no existe")
                     self.codeEd.delete(0, 'end')
                     self.codeEd.insert(0,str(''))
+
+                    self.codeEdit.configure(state=tkinter.NORMAL)
+                    self.nameEdit.configure(state=tkinter.NORMAL)
+                    self.prerequisiteEdit.configure(state=tkinter.NORMAL)
+                    self.creditsEdit.configure(state=tkinter.NORMAL)
+                    self.semesterEdit.configure(state=tkinter.NORMAL)
+                    self.mandatoryEdit.configure(state=tkinter.NORMAL)
+                    self.stateEdit.configure(state=tkinter.NORMAL)
+                    self.codeEdit.delete(0, 'end')
+                    self.nameEdit.delete(0, 'end')
+                    self.prerequisiteEdit.delete(0, 'end')
+                    self.creditsEdit.delete(0, 'end')
+                    self.semesterEdit.delete(0, 'end')
+                    self.mandatoryEdit.set("Opcionalidad")
+                    self.stateEdit.set("Estado")
+                    self.codeEdit.configure(state=tkinter.DISABLED)
+                    self.nameEdit.configure(state=tkinter.DISABLED)
+                    self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+                    self.creditsEdit.configure(state=tkinter.DISABLED)
+                    self.semesterEdit.configure(state=tkinter.DISABLED)
+                    self.mandatoryEdit.configure(state=tkinter.DISABLED)
+                    self.stateEdit.configure(state=tkinter.DISABLED)
+                    self.btnEdit.configure(state=tkinter.DISABLED)
             except:
                 messagebox.showinfo("Información", "Debe ingresar solo números")
                 self.codeEd.delete(0, 'end')
                 self.codeEd.insert(0,str(''))
+
+                self.codeEdit.configure(state=tkinter.NORMAL)
+                self.nameEdit.configure(state=tkinter.NORMAL)
+                self.prerequisiteEdit.configure(state=tkinter.NORMAL)
+                self.creditsEdit.configure(state=tkinter.NORMAL)
+                self.semesterEdit.configure(state=tkinter.NORMAL)
+                self.mandatoryEdit.configure(state=tkinter.NORMAL)
+                self.stateEdit.configure(state=tkinter.NORMAL)
+                self.codeEdit.delete(0, 'end')
+                self.nameEdit.delete(0, 'end')
+                self.prerequisiteEdit.delete(0, 'end')
+                self.creditsEdit.delete(0, 'end')
+                self.semesterEdit.delete(0, 'end')
+                self.mandatoryEdit.set("Opcionalidad")
+                self.stateEdit.set("Estado")
+                self.codeEdit.configure(state=tkinter.DISABLED)
+                self.nameEdit.configure(state=tkinter.DISABLED)
+                self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+                self.creditsEdit.configure(state=tkinter.DISABLED)
+                self.semesterEdit.configure(state=tkinter.DISABLED)
+                self.mandatoryEdit.configure(state=tkinter.DISABLED)
+                self.stateEdit.configure(state=tkinter.DISABLED)
+                self.btnEdit.configure(state=tkinter.DISABLED)
 
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)
@@ -440,7 +557,6 @@ class App(customtkinter.CTk):
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
-        self.formEdit.grid_remove()
         self.table.grid()
 
     def option2(self):
@@ -454,7 +570,6 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
-        self.formEdit.grid_remove()
         self.panelShow.grid()
 
     def option3(self):
@@ -468,7 +583,6 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelShow.grid_remove()
         self.panelEdit.grid_remove()
-        self.formEdit.grid_remove()
         self.panelAdd.grid()
 
     def option4(self):
@@ -482,7 +596,6 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
-        self.formEdit.grid_remove()
         self.panelEdit.grid()
 
     def option5(self):
