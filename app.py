@@ -56,7 +56,7 @@ class App(customtkinter.CTk):
         self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Conteo de Creditos",command=self.buttonEvent)
         self.credits.grid(row=4,column=0,pady=10,padx=20)
 
-        self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Salir",fg_color="#DE2828",hover_color="red",command=self.quit)
+        self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Salir",fg_color="#D35B58",hover_color="#C77C78",command=self.quit)
         self.credits.grid(row=9,column=0,pady=10,padx=20)
 
     def panelManageCourses(self):
@@ -389,37 +389,15 @@ class App(customtkinter.CTk):
         self.stateEdit.set("Estado")
         self.stateEdit.configure(state=tkinter.DISABLED)
 
-        self.btnEdit = customtkinter.CTkButton(master=self.panelEdit,text="Editar",width=400,height=40,text_font=("Roboto Medium",12))
-        self.btnEdit.grid(row=7,column=0,columnspan=7,pady=(20,80),padx=(120,120),sticky="nwe")
-        self.btnEdit.configure(state=tkinter.DISABLED)
+        self.btnEnableEdit = customtkinter.CTkButton(master=self.panelEdit,text="Editar",width=400,height=40,text_font=("Roboto Medium",12),command=self.enableEditing)
+        self.btnEnableEdit.grid(row=7,column=0,columnspan=7,pady=(20,80),padx=(120,120),sticky="nwe")
+        self.btnEnableEdit.configure(state=tkinter.DISABLED)
 
     def btnSearchEdit(self):
         codeV = self.codeEd.get()
         if codeV == '':
             messagebox.showinfo("Información", "Debe ingresar un código de curso")
-
-            self.codeEdit.configure(state=tkinter.NORMAL)
-            self.nameEdit.configure(state=tkinter.NORMAL)
-            self.prerequisiteEdit.configure(state=tkinter.NORMAL)
-            self.creditsEdit.configure(state=tkinter.NORMAL)
-            self.semesterEdit.configure(state=tkinter.NORMAL)
-            self.mandatoryEdit.configure(state=tkinter.NORMAL)
-            self.stateEdit.configure(state=tkinter.NORMAL)
-            self.codeEdit.delete(0, 'end')
-            self.nameEdit.delete(0, 'end')
-            self.prerequisiteEdit.delete(0, 'end')
-            self.creditsEdit.delete(0, 'end')
-            self.semesterEdit.delete(0, 'end')
-            self.mandatoryEdit.set("Opcionalidad")
-            self.stateEdit.set("Estado")
-            self.codeEdit.configure(state=tkinter.DISABLED)
-            self.nameEdit.configure(state=tkinter.DISABLED)
-            self.prerequisiteEdit.configure(state=tkinter.DISABLED)
-            self.creditsEdit.configure(state=tkinter.DISABLED)
-            self.semesterEdit.configure(state=tkinter.DISABLED)
-            self.mandatoryEdit.configure(state=tkinter.DISABLED)
-            self.stateEdit.configure(state=tkinter.DISABLED)
-            self.btnEdit.configure(state=tkinter.DISABLED)
+            self.resetFormEdit()
         else:
             try:
                 course = self.data.checkCourse(int(codeV))
@@ -473,61 +451,83 @@ class App(customtkinter.CTk):
                     self.semesterEdit.configure(state=tkinter.DISABLED)
                     self.mandatoryEdit.configure(state=tkinter.DISABLED)
                     self.stateEdit.configure(state=tkinter.DISABLED)
-                    self.btnEdit.configure(state=tkinter.NORMAL)
+                    self.btnEnableEdit.configure(state=tkinter.NORMAL)
                 else:
                     messagebox.showinfo("Información", "El curso no existe")
                     self.codeEd.delete(0, 'end')
                     self.codeEd.insert(0,str(''))
-
-                    self.codeEdit.configure(state=tkinter.NORMAL)
-                    self.nameEdit.configure(state=tkinter.NORMAL)
-                    self.prerequisiteEdit.configure(state=tkinter.NORMAL)
-                    self.creditsEdit.configure(state=tkinter.NORMAL)
-                    self.semesterEdit.configure(state=tkinter.NORMAL)
-                    self.mandatoryEdit.configure(state=tkinter.NORMAL)
-                    self.stateEdit.configure(state=tkinter.NORMAL)
-                    self.codeEdit.delete(0, 'end')
-                    self.nameEdit.delete(0, 'end')
-                    self.prerequisiteEdit.delete(0, 'end')
-                    self.creditsEdit.delete(0, 'end')
-                    self.semesterEdit.delete(0, 'end')
-                    self.mandatoryEdit.set("Opcionalidad")
-                    self.stateEdit.set("Estado")
-                    self.codeEdit.configure(state=tkinter.DISABLED)
-                    self.nameEdit.configure(state=tkinter.DISABLED)
-                    self.prerequisiteEdit.configure(state=tkinter.DISABLED)
-                    self.creditsEdit.configure(state=tkinter.DISABLED)
-                    self.semesterEdit.configure(state=tkinter.DISABLED)
-                    self.mandatoryEdit.configure(state=tkinter.DISABLED)
-                    self.stateEdit.configure(state=tkinter.DISABLED)
-                    self.btnEdit.configure(state=tkinter.DISABLED)
+                    self.resetFormEdit()
             except:
                 messagebox.showinfo("Información", "Debe ingresar solo números")
                 self.codeEd.delete(0, 'end')
                 self.codeEd.insert(0,str(''))
+                self.resetFormEdit()
 
-                self.codeEdit.configure(state=tkinter.NORMAL)
-                self.nameEdit.configure(state=tkinter.NORMAL)
-                self.prerequisiteEdit.configure(state=tkinter.NORMAL)
-                self.creditsEdit.configure(state=tkinter.NORMAL)
-                self.semesterEdit.configure(state=tkinter.NORMAL)
-                self.mandatoryEdit.configure(state=tkinter.NORMAL)
-                self.stateEdit.configure(state=tkinter.NORMAL)
-                self.codeEdit.delete(0, 'end')
-                self.nameEdit.delete(0, 'end')
-                self.prerequisiteEdit.delete(0, 'end')
-                self.creditsEdit.delete(0, 'end')
-                self.semesterEdit.delete(0, 'end')
-                self.mandatoryEdit.set("Opcionalidad")
-                self.stateEdit.set("Estado")
-                self.codeEdit.configure(state=tkinter.DISABLED)
-                self.nameEdit.configure(state=tkinter.DISABLED)
-                self.prerequisiteEdit.configure(state=tkinter.DISABLED)
-                self.creditsEdit.configure(state=tkinter.DISABLED)
-                self.semesterEdit.configure(state=tkinter.DISABLED)
-                self.mandatoryEdit.configure(state=tkinter.DISABLED)
-                self.stateEdit.configure(state=tkinter.DISABLED)
-                self.btnEdit.configure(state=tkinter.DISABLED)
+    def enableEditing(self):
+        self.btnEnableEdit.grid_remove()
+        self.codeEd.configure(state=tkinter.DISABLED)
+        self.searchCEdit.configure(state=tkinter.DISABLED)
+
+        self.btnEdit = customtkinter.CTkButton(master=self.panelEdit,text="Guardar",width=400,height=40,text_font=("Roboto Medium",12),command=self.addC)
+        self.btnEdit.grid(row=7,column=0,columnspan=3,pady=(20,80),padx=(120,0),sticky="nw")
+
+        self.btnCancel = customtkinter.CTkButton(master=self.panelEdit,text="Cancelar",fg_color="#D35B58",hover_color="#C77C78",width=400,height=40,text_font=("Roboto Medium",12),command=self.disableEditing)
+        self.btnCancel.grid(row=7,column=4,columnspan=3,pady=(20,80),padx=(0,120),sticky="ne")
+
+        self.nameEdit.configure(state=tkinter.NORMAL)
+        self.prerequisiteEdit.configure(state=tkinter.NORMAL)
+        self.creditsEdit.configure(state=tkinter.NORMAL)
+        self.semesterEdit.configure(state=tkinter.NORMAL)
+        self.mandatoryEdit.configure(state=tkinter.NORMAL)
+        self.stateEdit.configure(state=tkinter.NORMAL)
+
+    def disableEditing(self):
+        self.btnEdit.grid_remove()
+        self.btnCancel.grid_remove()
+        self.btnEnableEdit.grid()
+
+        codeV = self.codeEdit.get()
+
+        self.nameEdit.delete(0,'end')
+        self.prerequisiteEdit.delete(0,'end')
+        self.creditsEdit.delete(0,'end')
+        self.semesterEdit.delete(0,'end')
+
+        pre = ''
+        for pr in self.data.checkCourse(int(codeV)).prerequisite:
+            pre += pr + ' '
+
+        self.nameEdit.insert(0,str(self.data.checkCourse(int(codeV)).name))
+        self.prerequisiteEdit.insert(0,str(pre))
+        self.creditsEdit.insert(0,str(self.data.checkCourse(int(codeV)).credits))
+        self.semesterEdit.insert(0,str(self.data.checkCourse(int(codeV)).semester))
+        if int(self.data.checkCourse(int(codeV)).mandatory) == 1:
+            self.mandatoryEdit.set('Obligatorio')
+        elif int(self.data.checkCourse(int(codeV)).mandatory) == 0:
+            self.mandatoryEdit.set('Opcional')
+        else:
+            self.mandatoryEdit.set('Error')
+
+        if int(self.data.checkCourse(int(codeV)).state) == 0:
+            self.stateEdit.set('Aprobado')
+        elif int(self.data.checkCourse(int(codeV)).state) == 1:
+            self.stateEdit.set('Cursando')
+        elif int(self.data.checkCourse(int(codeV)).state) == -1:
+            self.stateEdit.set('Pendiente')
+        else:
+            self.stateEdit.set('Error')
+
+        
+        self.codeEdit.configure(state=tkinter.DISABLED)
+        self.nameEdit.configure(state=tkinter.DISABLED)
+        self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+        self.creditsEdit.configure(state=tkinter.DISABLED)
+        self.semesterEdit.configure(state=tkinter.DISABLED)
+        self.mandatoryEdit.configure(state=tkinter.DISABLED)
+        self.stateEdit.configure(state=tkinter.DISABLED)
+
+        self.codeEd.configure(state=tkinter.NORMAL)
+        self.searchCEdit.configure(state=tkinter.NORMAL)
 
     def selectFile(self):
         self.route.configure(state=tkinter.NORMAL)
@@ -609,6 +609,30 @@ class App(customtkinter.CTk):
     def buttonEvent(self):
         pass
         #self.frameRight1.grid_forget()
+
+    def resetFormEdit(self):
+        self.codeEdit.configure(state=tkinter.NORMAL)
+        self.nameEdit.configure(state=tkinter.NORMAL)
+        self.prerequisiteEdit.configure(state=tkinter.NORMAL)
+        self.creditsEdit.configure(state=tkinter.NORMAL)
+        self.semesterEdit.configure(state=tkinter.NORMAL)
+        self.mandatoryEdit.configure(state=tkinter.NORMAL)
+        self.stateEdit.configure(state=tkinter.NORMAL)
+        self.codeEdit.delete(0, 'end')
+        self.nameEdit.delete(0, 'end')
+        self.prerequisiteEdit.delete(0, 'end')
+        self.creditsEdit.delete(0, 'end')
+        self.semesterEdit.delete(0, 'end')
+        self.mandatoryEdit.set("Opcionalidad")
+        self.stateEdit.set("Estado")
+        self.codeEdit.configure(state=tkinter.DISABLED)
+        self.nameEdit.configure(state=tkinter.DISABLED)
+        self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+        self.creditsEdit.configure(state=tkinter.DISABLED)
+        self.semesterEdit.configure(state=tkinter.DISABLED)
+        self.mandatoryEdit.configure(state=tkinter.DISABLED)
+        self.stateEdit.configure(state=tkinter.DISABLED)
+        self.btnEnableEdit.configure(state=tkinter.DISABLED)
 
     def onClosing(self, event=0):
         self.destroy()
