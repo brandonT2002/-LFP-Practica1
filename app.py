@@ -50,10 +50,10 @@ class App(customtkinter.CTk):
         self.fileUpload = customtkinter.CTkButton(master=self.frameLeft,text="Cargar Archivos",command=self.selectFile)
         self.fileUpload.grid(row=2,column=0,pady=10,padx=20)
 
-        self.manageCourses = customtkinter.CTkButton(master=self.frameLeft,text="Gestionar Cursos",command=self.buttonEvent)
+        self.manageCourses = customtkinter.CTkButton(master=self.frameLeft,text="Gestionar Cursos")
         self.manageCourses.grid(row=3,column=0,pady=10,padx=20)
 
-        self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Conteo de Creditos",command=self.buttonEvent)
+        self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Conteo de Creditos")
         self.credits.grid(row=4,column=0,pady=10,padx=20)
 
         self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Salir",fg_color="#D35B58",hover_color="#C77C78",command=self.quit)
@@ -468,7 +468,7 @@ class App(customtkinter.CTk):
         self.codeEd.configure(state=tkinter.DISABLED)
         self.searchCEdit.configure(state=tkinter.DISABLED)
 
-        self.btnEdit = customtkinter.CTkButton(master=self.panelEdit,text="Guardar",width=400,height=40,text_font=("Roboto Medium",12),command=self.addC)
+        self.btnEdit = customtkinter.CTkButton(master=self.panelEdit,text="Guardar",width=400,height=40,text_font=("Roboto Medium",12),command=self.save)
         self.btnEdit.grid(row=7,column=0,columnspan=3,pady=(20,80),padx=(120,0),sticky="nw")
 
         self.btnCancel = customtkinter.CTkButton(master=self.panelEdit,text="Cancelar",fg_color="#D35B58",hover_color="#C77C78",width=400,height=40,text_font=("Roboto Medium",12),command=self.disableEditing)
@@ -529,21 +529,73 @@ class App(customtkinter.CTk):
         self.codeEd.configure(state=tkinter.NORMAL)
         self.searchCEdit.configure(state=tkinter.NORMAL)
 
+    def save(self):
+        code = self.codeEdit.get()
+        name = self.nameEdit.get()
+        prerequisite = self.prerequisiteEdit.get()
+        credits = self.creditsEdit.get()
+        semester = self.semesterEdit.get()
+        mandatory = self.mandatoryEdit.get()
+        state = self.stateEdit.get()
+
+        if mandatory == 'Opcional':
+            mandatory = 1
+        else:
+            mandatory = 0
+
+        if state == 'Aprobado':
+            state = 0
+        elif state == 'Cursando':
+            state = 1
+        else:
+            state = -1
+
+        
+        if self.data.editCourse(int(code),name,prerequisite,mandatory,int(semester),int(credits),state):
+            messagebox.showinfo("Información", "Curso actualizado exitosamente")
+            self.tableCourses()
+            self.table.grid_remove()
+            self.btnEdit.grid_remove()
+            self.btnCancel.grid_remove()
+            self.btnEnableEdit.grid()
+
+            self.codeEdit.configure(state=tkinter.NORMAL)
+            self.codeEdit.delete(0, 'end')
+            self.nameEdit.delete(0, 'end')
+            self.prerequisiteEdit.delete(0, 'end')
+            self.creditsEdit.delete(0, 'end')
+            self.semesterEdit.delete(0, 'end')
+            self.mandatoryEdit.set("Opcionalidad")
+            self.stateEdit.set("Estado")
+            self.codeEdit.configure(state=tkinter.DISABLED)
+            self.nameEdit.configure(state=tkinter.DISABLED)
+            self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+            self.creditsEdit.configure(state=tkinter.DISABLED)
+            self.semesterEdit.configure(state=tkinter.DISABLED)
+            self.mandatoryEdit.configure(state=tkinter.DISABLED)
+            self.stateEdit.configure(state=tkinter.DISABLED)
+            self.btnEnableEdit.configure(state=tkinter.DISABLED)
+            self.codeEd.configure(state=tkinter.NORMAL)
+            self.searchCEdit.configure(state=tkinter.NORMAL)
+
     def selectFile(self):
-        self.route.configure(state=tkinter.NORMAL)
-        filetypes = (
-            ('text files', '*.lfp'),
-            ('All files', '*.*')
-        )
-        fileRoute = fd.askopenfilename(
-            title='Open a file',
-            initialdir='',
-            filetypes=filetypes)
-        self.route.delete(0, 'end')
-        self.data.readFile(fileRoute)
-        self.tableData()
-        self.route.insert(0,str(fileRoute))
-        self.route.configure(state=tkinter.DISABLED)
+        try:
+            self.route.configure(state=tkinter.NORMAL)
+            filetypes = (
+                ('text files', '*.lfp'),
+                ('All files', '*.*')
+            )
+            fileRoute = fd.askopenfilename(
+                title='Open a file',
+                initialdir='',
+                filetypes=filetypes)
+            self.route.delete(0, 'end')
+            self.data.readFile(fileRoute)
+            self.tableData()
+            self.route.insert(0,str(fileRoute))
+            self.route.configure(state=tkinter.DISABLED)
+        except:
+            pass 
 
     def option1(self):
         self.getCourses.configure(state=tkinter.DISABLED)
@@ -605,10 +657,6 @@ class App(customtkinter.CTk):
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.DISABLED)
         self.route.configure(state=tkinter.DISABLED)
-
-    def buttonEvent(self):
-        pass
-        #self.frameRight1.grid_forget()
 
     def resetFormEdit(self):
         self.codeEdit.configure(state=tkinter.NORMAL)
