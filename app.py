@@ -550,33 +550,15 @@ class App(customtkinter.CTk):
         else:
             state = -1
 
-        
-        if self.data.editCourse(int(code),name,prerequisite,mandatory,int(semester),int(credits),state):
-            messagebox.showinfo("Información", "Curso actualizado exitosamente")
-            self.tableCourses()
-            self.table.grid_remove()
-            self.btnEdit.grid_remove()
-            self.btnCancel.grid_remove()
-            self.btnEnableEdit.grid()
-
-            self.codeEdit.configure(state=tkinter.NORMAL)
-            self.codeEdit.delete(0, 'end')
-            self.nameEdit.delete(0, 'end')
-            self.prerequisiteEdit.delete(0, 'end')
-            self.creditsEdit.delete(0, 'end')
-            self.semesterEdit.delete(0, 'end')
-            self.mandatoryEdit.set("Opcionalidad")
-            self.stateEdit.set("Estado")
-            self.codeEdit.configure(state=tkinter.DISABLED)
-            self.nameEdit.configure(state=tkinter.DISABLED)
-            self.prerequisiteEdit.configure(state=tkinter.DISABLED)
-            self.creditsEdit.configure(state=tkinter.DISABLED)
-            self.semesterEdit.configure(state=tkinter.DISABLED)
-            self.mandatoryEdit.configure(state=tkinter.DISABLED)
-            self.stateEdit.configure(state=tkinter.DISABLED)
-            self.btnEnableEdit.configure(state=tkinter.DISABLED)
-            self.codeEd.configure(state=tkinter.NORMAL)
-            self.searchCEdit.configure(state=tkinter.NORMAL)
+        if name == '' or credits == '' or semester == '' or mandatory == 'Opcionalidad' or state == 'Estado':
+            messagebox.showinfo("Información", "Todos los campos son obligatorios")
+        else:
+            try:
+                if self.data.editCourse(int(code),name,prerequisite,mandatory,int(semester),int(credits),state):
+                    messagebox.showinfo("Información", "Curso actualizado exitosamente")
+                    self.reset()
+            except:
+                messagebox.showinfo("Información", "Datos Incorrectos")
 
     def selectFile(self):
         try:
@@ -681,6 +663,32 @@ class App(customtkinter.CTk):
         self.mandatoryEdit.configure(state=tkinter.DISABLED)
         self.stateEdit.configure(state=tkinter.DISABLED)
         self.btnEnableEdit.configure(state=tkinter.DISABLED)
+
+    def reset(self):
+        self.tableCourses()
+        self.table.grid_remove()
+        self.btnEdit.grid_remove()
+        self.btnCancel.grid_remove()
+        self.btnEnableEdit.grid()
+
+        self.codeEdit.configure(state=tkinter.NORMAL)
+        self.codeEdit.delete(0, 'end')
+        self.nameEdit.delete(0, 'end')
+        self.prerequisiteEdit.delete(0, 'end')
+        self.creditsEdit.delete(0, 'end')
+        self.semesterEdit.delete(0, 'end')
+        self.mandatoryEdit.set("Opcionalidad")
+        self.stateEdit.set("Estado")
+        self.codeEdit.configure(state=tkinter.DISABLED)
+        self.nameEdit.configure(state=tkinter.DISABLED)
+        self.prerequisiteEdit.configure(state=tkinter.DISABLED)
+        self.creditsEdit.configure(state=tkinter.DISABLED)
+        self.semesterEdit.configure(state=tkinter.DISABLED)
+        self.mandatoryEdit.configure(state=tkinter.DISABLED)
+        self.stateEdit.configure(state=tkinter.DISABLED)
+        self.btnEnableEdit.configure(state=tkinter.DISABLED)
+        self.codeEd.configure(state=tkinter.NORMAL)
+        self.searchCEdit.configure(state=tkinter.NORMAL)
 
     def onClosing(self, event=0):
         self.destroy()
