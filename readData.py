@@ -36,8 +36,16 @@ class Controller:
             return True
         return False
 
+    def deleteCourse(self,code):
+        if self.checkCourse(code):
+            self.courses.pop(self.index)
+            return True
+        return False
+
     def checkCourse(self,code):
+        self.index = 0
         for i in self.courses:
             if i.code == code:
                 return i
+            self.index += 1
         return None
