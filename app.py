@@ -95,9 +95,11 @@ class App(customtkinter.CTk):
         self.tableCourses()
         self.panelAddCourse()
         self.panelEditCourses()
+        self.panelDeleteCourse()
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
+        self.panelDelete.grid_remove()
 
     def tableCourses(self):
         self.table = customtkinter.CTkFrame(master=self.frameRight1)
@@ -560,6 +562,39 @@ class App(customtkinter.CTk):
             except:
                 messagebox.showinfo("Información", "Datos Incorrectos")
 
+    def panelDeleteCourse(self):        
+        self.panelDelete = customtkinter.CTkFrame(master=self.frameRight1)
+        self.panelDelete.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
+        self.panelDelete.rowconfigure(0, weight=1)
+        self.panelDelete.columnconfigure(0, weight=1)
+
+        self.codeD = customtkinter.CTkEntry(master=self.panelDelete,width=120,height=40,placeholder_text="Ingrese el Código del Curso")
+        self.codeD.grid(row=1,column=0,columnspan=6,pady=20,padx=20,sticky="nwe")
+
+        self.deleteC = customtkinter.CTkButton(master=self.panelDelete,text="Eliminar Curso",height=40,fg_color="gray40",hover_color="gray25",command=self.delete)
+        self.deleteC.grid(row=1,column=6,pady=20,padx=(5,20),sticky="nwe")
+
+    def delete(self):
+        code = self.codeD.get()
+        if code == '':
+            messagebox.showinfo("Información", "Debe ingresar un código de curso")
+        else:
+            try:
+                if self.data.deleteCourse(int(code)):
+                    messagebox.showinfo("Información", "Curso eliminado exitosamente")
+                    self.codeD.delete(0, 'end')
+                    self.codeD.insert(0,str(''))
+                    self.tableCourses()
+                    self.table.grid_remove()
+                else:
+                    messagebox.showinfo("Información", "El curso no existe")
+                    self.codeD.delete(0, 'end')
+                    self.codeD.insert(0,str(''))
+            except:
+                messagebox.showinfo("Información", "Debe ingresar solo numeros")
+                self.codeD.delete(0, 'end')
+                self.codeD.insert(0,str(''))
+
     def selectFile(self):
         try:
             self.route.configure(state=tkinter.NORMAL)
@@ -591,6 +626,7 @@ class App(customtkinter.CTk):
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
+        self.panelDelete.grid_remove()
         self.table.grid()
 
     def option2(self):
@@ -604,6 +640,7 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
+        self.panelDelete.grid_remove()
         self.panelShow.grid()
 
     def option3(self):
@@ -617,6 +654,7 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelShow.grid_remove()
         self.panelEdit.grid_remove()
+        self.panelDelete.grid_remove()
         self.panelAdd.grid()
 
     def option4(self):
@@ -630,6 +668,7 @@ class App(customtkinter.CTk):
         self.table.grid_remove()
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
+        self.panelDelete.grid_remove()
         self.panelEdit.grid()
 
     def option5(self):
@@ -639,6 +678,12 @@ class App(customtkinter.CTk):
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.DISABLED)
         self.route.configure(state=tkinter.DISABLED)
+
+        self.table.grid_remove()
+        self.panelShow.grid_remove()
+        self.panelAdd.grid_remove()
+        self.panelEdit.grid_remove()
+        self.panelDelete.grid()
 
     def resetFormEdit(self):
         self.codeEdit.configure(state=tkinter.NORMAL)
