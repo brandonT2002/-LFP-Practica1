@@ -27,16 +27,14 @@ class Controller:
     def editCourse(self,code,name,prerequisite,mandatory,semester,credits,state):
         course = self.checkCourse(code)
         if course:
-            course.code = code
             course.name = name
-            course.prerequisite = prerequisite
+            course.prerequisite = prerequisite.split(';')
             course.mandatory = mandatory
             course.semester = semester
             course.credits = credits
             course.state = state
-            print('actualizado')
-        else:
-            return False
+            return True
+        return False
 
     def verifyCourse(self,code):
         for i in self.courses:
