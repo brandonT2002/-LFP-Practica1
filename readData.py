@@ -36,12 +36,6 @@ class Controller:
             return True
         return False
 
-    def verifyCourse(self,code):
-        for i in self.courses:
-            if i.code == code:
-                return True
-        return False
-
     def checkCourse(self,code):
         for i in self.courses:
             if i.code == code:
