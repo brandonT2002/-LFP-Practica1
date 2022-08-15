@@ -571,8 +571,116 @@ class App(customtkinter.CTk):
         self.codeD = customtkinter.CTkEntry(master=self.panelDelete,width=120,height=40,placeholder_text="Ingrese el Código del Curso")
         self.codeD.grid(row=1,column=0,columnspan=6,pady=20,padx=20,sticky="nwe")
 
-        self.deleteC = customtkinter.CTkButton(master=self.panelDelete,text="Eliminar Curso",height=40,fg_color="gray40",hover_color="gray25",command=self.delete)
+        self.deleteC = customtkinter.CTkButton(master=self.panelDelete,text="Eliminar Curso",height=40,fg_color="gray40",hover_color="gray25",command=self.getCodeDelete)
         self.deleteC.grid(row=1,column=6,pady=20,padx=(5,20),sticky="nwe")
+
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Código",width=50).grid(row=2,column=0,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Nombre",width=250).grid(row=2,column=1,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Prerrequisitos",width=150).grid(row=2,column=2,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Opcionalidad",width=150).grid(row=2,column=3,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Semestre",width=150).grid(row=2,column=4,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Creditos",width=150).grid(row=2,column=5,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Estado",width=150).grid(row=2,column=6,sticky="we")
+
+        self.btnDelete = customtkinter.CTkButton(master=self.panelDelete,text="Confirmar Eliminación",fg_color="#D35B58",hover_color="#C77C78",width=200,height=40,text_font=("Roboto Medium",12),command=self.delete)
+        self.btnDelete.grid(row=7,column=1,columnspan=3,pady=(20,50),padx=(190,0),sticky="nw")
+
+        self.btnCancelD = customtkinter.CTkButton(master=self.panelDelete,text="Cancelar",width=200,height=40,text_font=("Roboto Medium",12),command=self.cancelDelete)
+        self.btnCancelD.grid(row=7,column=3,columnspan=3,pady=(20,50),padx=(0,190),sticky="ne")
+
+        self.btnDelete.grid_remove()
+        self.btnCancelD.grid_remove()
+
+    def getCodeDelete(self):
+        result = self.codeD.get()
+        if result == '':
+            messagebox.showinfo("Información", "Debe ingresar un Código de Curso")
+        else:
+            try:
+                self.courseFound = self.data.searchCourse(int(result))
+                if self.courseFound:
+                    self.tableDataDelete()
+                    self.btnDelete.grid()
+                    self.btnCancelD.grid()
+                    self.codeD.configure(state=tkinter.DISABLED)
+                    self.deleteC.configure(state=tkinter.DISABLED)
+                else:
+                    messagebox.showinfo("Información", "El curso no existe")
+                    self.codeD.delete(0, 'end')
+                    self.codeD.insert(0,str(''))
+            except:
+                messagebox.showinfo("Información", "Debe ingresar solo números")
+                self.codeD.delete(0, 'end')
+                self.codeD.insert(0,str(''))
+
+    def tableDataDelete(self):
+        for i in range(1):
+            exec(f"self.e{i}codeD = customtkinter.CTkEntry(self.panelDelete,width=50)")
+            exec(f"self.e{i}codeD.grid(row={i+3},column=0,columnspan=1,sticky='we')")
+            exec(f"self.e{i}codeD.insert('end',self.courseFound.code)")
+            exec(f"self.e{i}codeD.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}nameD = customtkinter.CTkEntry(self.panelDelete,width=150)")
+            exec(f"self.e{i}nameD.grid(row={i+3},column=1,columnspan=1,sticky='we')")
+            exec(f"self.e{i}nameD.insert('end',self.courseFound.name)")
+            exec(f"self.e{i}nameD.configure(state=tkinter.DISABLED)")
+
+            pre = ''
+            for pr in self.courseFound.prerequisite:
+                pre += pr + ' '
+            exec(f"self.e{i}prerequisiteD = customtkinter.CTkEntry(self.panelDelete,width=150)")
+            exec(f"self.e{i}prerequisiteD.grid(row={i+3},column=2,columnspan=1,sticky='e')")
+            exec(f"self.e{i}prerequisiteD.insert('end','{pre}')")
+            exec(f"self.e{i}prerequisiteD.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}mandatoryD = customtkinter.CTkEntry(self.panelDelete,width=150)")
+            exec(f"self.e{i}mandatoryD.grid(row={i+3},column=3,columnspan=1,sticky='we')")
+            if int(self.courseFound.mandatory) == 1:
+                exec(f"self.e{i}mandatoryD.insert('end','Obligatorio')")
+            elif int(self.courseFound.mandatory) == 0:
+                exec(f"self.e{i}mandatoryD.insert('end','Opcional')")
+            else:
+                exec(f"self.e{i}mandatoryD.insert('end','Error')")
+            exec(f"self.e{i}mandatoryD.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}semesterD = customtkinter.CTkEntry(self.panelDelete,width=150)")
+            exec(f"self.e{i}semesterD.grid(row={i+3},column=4,columnspan=1,sticky='we')")
+            exec(f"self.e{i}semesterD.insert('end',self.courseFound.semester)")
+            exec(f"self.e{i}semesterD.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}creditsD = customtkinter.CTkEntry(self.panelDelete,width=150)")
+            exec(f"self.e{i}creditsD.grid(row={i+3},column=5,columnspan=1,sticky='we')")
+            exec(f"self.e{i}creditsD.insert('end',self.courseFound.credits)")
+            exec(f"self.e{i}creditsD.configure(state=tkinter.DISABLED)")
+
+            exec(f"self.e{i}stateD = customtkinter.CTkEntry(self.panelDelete,width=150)")
+            exec(f"self.e{i}stateD.grid(row={i+3},column=6,columnspan=1,sticky='we')")
+            if int(self.courseFound.state) == 0:
+                exec(f"self.e{i}stateD.insert('end','Aprobado')")
+            elif int(self.courseFound.state) == 1:
+                exec(f"self.e{i}stateD.insert('end','Cursando')")
+            elif int(self.courseFound.state) == -1:
+                exec(f"self.e{i}stateD.insert('end','Pendiente')")
+            else:
+                exec(f"self.e{i}stateD.insert('end','Error')")
+            exec(f"self.e{i}stateD.configure(state=tkinter.DISABLED)")
+
+    def cancelDelete(self):
+        self.btnDelete.grid_remove()
+        self.btnCancelD.grid_remove()
+        self.codeD.configure(state=tkinter.NORMAL)
+        self.deleteC.configure(state=tkinter.NORMAL)
+        self.codeD.delete(0, 'end')
+        self.codeD.insert(0,str(''))
+
+        for i in range(1):
+            exec(f"self.e{i}codeD.grid_remove()")
+            exec(f"self.e{i}nameD.grid_remove()")
+            exec(f"self.e{i}prerequisiteD.grid_remove()")
+            exec(f"self.e{i}mandatoryD.grid_remove()")
+            exec(f"self.e{i}semesterD.grid_remove()")
+            exec(f"self.e{i}creditsD.grid_remove()")
+            exec(f"self.e{i}stateD.grid_remove()")
 
     def delete(self):
         code = self.codeD.get()
@@ -582,10 +690,23 @@ class App(customtkinter.CTk):
             try:
                 if self.data.deleteCourse(int(code)):
                     messagebox.showinfo("Información", "Curso eliminado exitosamente")
-                    self.codeD.delete(0, 'end')
-                    self.codeD.insert(0,str(''))
                     self.tableCourses()
                     self.table.grid_remove()
+                    self.btnDelete.grid_remove()
+                    self.btnCancelD.grid_remove()
+                    self.codeD.configure(state=tkinter.NORMAL)
+                    self.deleteC.configure(state=tkinter.NORMAL)
+                    self.codeD.delete(0, 'end')
+                    self.codeD.insert(0,str(''))
+
+                    for i in range(1):
+                        exec(f"self.e{i}codeD.grid_remove()")
+                        exec(f"self.e{i}nameD.grid_remove()")
+                        exec(f"self.e{i}prerequisiteD.grid_remove()")
+                        exec(f"self.e{i}mandatoryD.grid_remove()")
+                        exec(f"self.e{i}semesterD.grid_remove()")
+                        exec(f"self.e{i}creditsD.grid_remove()")
+                        exec(f"self.e{i}stateD.grid_remove()")
                 else:
                     messagebox.showinfo("Información", "El curso no existe")
                     self.codeD.delete(0, 'end')
@@ -612,7 +733,7 @@ class App(customtkinter.CTk):
             self.route.insert(0,str(fileRoute))
             self.route.configure(state=tkinter.DISABLED)
         except:
-            pass 
+            messagebox.showinfo("Información", "No se ha cargado niugún archivo")
 
     def option1(self):
         self.getCourses.configure(state=tkinter.DISABLED)
