@@ -739,6 +739,8 @@ class App(customtkinter.CTk):
             self.route.delete(0, 'end')
             self.route.insert(0,str(fileRoute))
             self.route.configure(state=tkinter.DISABLED)
+            self.data.approvedCredits()
+            self.panelCountCredits()
         except:
             pass
     
@@ -760,7 +762,8 @@ class App(customtkinter.CTk):
         self.panelApproved.rowconfigure(0, weight=1)
         self.panelApproved.columnconfigure(0, weight=1)
 
-        self.label_info_1 = customtkinter.CTkLabel(master=self.panelApproved,text="Creditos Aprovados\n00",text_font=("Roboto Medium",16))
+        self.data.approvedCredits()
+        self.label_info_1 = customtkinter.CTkLabel(master=self.panelApproved,text=f"Creditos Aprobados\n{self.data.count}",text_font=("Roboto Medium",16))
         self.label_info_1.grid(row=0,column=0,sticky="snwe",padx=15,pady=15)
 
     def panelCreditsStudying(self):
@@ -769,7 +772,7 @@ class App(customtkinter.CTk):
         self.panelStudying.rowconfigure(0, weight=1)
         self.panelStudying.columnconfigure(0, weight=1)
 
-        self.label_info_1 = customtkinter.CTkLabel(master=self.panelStudying,text="Creditos Cursando\n00",text_font=("Roboto Medium",16))
+        self.label_info_1 = customtkinter.CTkLabel(master=self.panelStudying,text="Creditos Cursando\n0",text_font=("Roboto Medium",16))
         self.label_info_1.grid(row=0,column=0,sticky="snwe",padx=15,pady=15)
 
     def panelOutstandingCredits(self):
@@ -778,7 +781,7 @@ class App(customtkinter.CTk):
         self.panelOutstanding.rowconfigure(0, weight=1)
         self.panelOutstanding.columnconfigure(0, weight=1)
 
-        self.label_info_1 = customtkinter.CTkLabel(master=self.panelOutstanding,text="Créditos Pendientes\n00",text_font=("Roboto Medium",16))
+        self.label_info_1 = customtkinter.CTkLabel(master=self.panelOutstanding,text="Créditos Pendientes\n0",text_font=("Roboto Medium",16))
         self.label_info_1.grid(row=0,column=0,sticky="snwe",padx=15,pady=15)
 
     def requiredCredits1(self):

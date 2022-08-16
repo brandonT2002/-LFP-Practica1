@@ -45,9 +45,8 @@ class Controller:
     def approvedCredits(self):
         self.count = 0
         for i in self.courses:
-            if i.state == 0:
+            if i.state == '0':
                 self.count += i.credits
-            return self.count
 
     def checkCourse(self,code):
         self.index = 0
