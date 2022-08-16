@@ -763,7 +763,7 @@ class App(customtkinter.CTk):
         self.panelApproved.columnconfigure(0, weight=1)
 
         self.data.approvedCredits()
-        self.label_info_1 = customtkinter.CTkLabel(master=self.panelApproved,text=f"Creditos Aprobados\n{self.data.count}",text_font=("Roboto Medium",16))
+        self.label_info_1 = customtkinter.CTkLabel(master=self.panelApproved,text=f"Creditos Aprobados\n{self.data.count1}",text_font=("Roboto Medium",16))
         self.label_info_1.grid(row=0,column=0,sticky="snwe",padx=15,pady=15)
 
     def panelCreditsStudying(self):
@@ -772,7 +772,8 @@ class App(customtkinter.CTk):
         self.panelStudying.rowconfigure(0, weight=1)
         self.panelStudying.columnconfigure(0, weight=1)
 
-        self.label_info_1 = customtkinter.CTkLabel(master=self.panelStudying,text="Creditos Cursando\n0",text_font=("Roboto Medium",16))
+        self.data.creditsStudying()
+        self.label_info_1 = customtkinter.CTkLabel(master=self.panelStudying,text=f"Creditos Cursando\n{self.data.count2}",text_font=("Roboto Medium",16))
         self.label_info_1.grid(row=0,column=0,sticky="snwe",padx=15,pady=15)
 
     def panelOutstandingCredits(self):
