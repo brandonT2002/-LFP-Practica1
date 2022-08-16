@@ -33,6 +33,9 @@ class App(customtkinter.CTk):
         self.frameRight1 = customtkinter.CTkFrame(master=self)
         self.frameRight1.grid(row=0,column=1,sticky="nswe",padx=20,pady=20)
 
+        self.frameRight2 = customtkinter.CTkFrame(master=self)
+        self.frameRight2.grid(row=0,column=1,sticky="nswe",padx=20,pady=20)
+
         self.panelOptions()
         self.panelManageCourses()
 
@@ -89,6 +92,7 @@ class App(customtkinter.CTk):
         self.route = customtkinter.CTkEntry(master=self.frameRight1,width=120,placeholder_text="Ruta del archivo")
         self.route.grid(row=1,column=0,columnspan=5,pady=(15,10),padx=20,sticky="nwe")
 
+        self.route.configure(state=tkinter.DISABLED)
         self.getCourses.configure(state=tkinter.DISABLED)
         
         self.panelshowCourses()
@@ -112,13 +116,13 @@ class App(customtkinter.CTk):
     def tableData(self):
         self.results = self.data.courses
         
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Código",width=50).grid(row=0,column=0,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Nombre",width=250).grid(row=0,column=1,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Prerrequisitos",width=150).grid(row=0,column=2,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Opcionalidad",width=150).grid(row=0,column=3,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Semestre",width=150).grid(row=0,column=4,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Creditos",width=150).grid(row=0,column=5,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Estado",width=150).grid(row=0,column=6,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Código",width=50,height=50).grid(row=0,column=0,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Nombre",width=250,height=50).grid(row=0,column=1,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Prerrequisitos",width=150,height=50).grid(row=0,column=2,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Opcionalidad",width=150,height=50).grid(row=0,column=3,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Semestre",width=150,height=50).grid(row=0,column=4,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Creditos",width=150,height=50).grid(row=0,column=5,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.table,text = "Estado",width=150,height=50).grid(row=0,column=6,sticky="nwe")
 
         for i in range(len(self.results)):
             exec(f"self.e{i}code = customtkinter.CTkEntry(self.table,width=50)")
@@ -183,13 +187,13 @@ class App(customtkinter.CTk):
         self.searchCourse = customtkinter.CTkButton(master=self.panelShow,text="Buscar Curso",height=40,fg_color="gray40",hover_color="gray25",command=self.getCode)
         self.searchCourse.grid(row=1,column=6,pady=20,padx=(5,20),sticky="nwe")
 
-        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Código",width=50).grid(row=2,column=0,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Nombre",width=250).grid(row=2,column=1,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Prerrequisitos",width=150).grid(row=2,column=2,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Opcionalidad",width=150).grid(row=2,column=3,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Semestre",width=150).grid(row=2,column=4,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Creditos",width=150).grid(row=2,column=5,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Estado",width=150).grid(row=2,column=6,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Código",width=50,height=50).grid(row=2,column=0,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Nombre",width=250,height=50).grid(row=2,column=1,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Prerrequisitos",width=150,height=50).grid(row=2,column=2,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Opcionalidad",width=150,height=50).grid(row=2,column=3,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Semestre",width=150,height=50).grid(row=2,column=4,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Creditos",width=150,height=50).grid(row=2,column=5,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelShow,text = "Estado",width=150,height=50).grid(row=2,column=6,sticky="we")
 
     def tableDataShow(self):
         for i in range(1):
@@ -562,7 +566,7 @@ class App(customtkinter.CTk):
             except:
                 messagebox.showinfo("Información", "Datos Incorrectos")
 
-    def panelDeleteCourse(self):        
+    def panelDeleteCourse(self):
         self.panelDelete = customtkinter.CTkFrame(master=self.frameRight1)
         self.panelDelete.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
         self.panelDelete.rowconfigure(0, weight=1)
@@ -574,13 +578,13 @@ class App(customtkinter.CTk):
         self.deleteC = customtkinter.CTkButton(master=self.panelDelete,text="Eliminar Curso",height=40,fg_color="gray40",hover_color="gray25",command=self.getCodeDelete)
         self.deleteC.grid(row=1,column=6,pady=20,padx=(5,20),sticky="nwe")
 
-        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Código",width=50).grid(row=2,column=0,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Nombre",width=250).grid(row=2,column=1,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Prerrequisitos",width=150).grid(row=2,column=2,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Opcionalidad",width=150).grid(row=2,column=3,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Semestre",width=150).grid(row=2,column=4,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Creditos",width=150).grid(row=2,column=5,sticky="we")
-        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Estado",width=150).grid(row=2,column=6,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Código",width=50,height=50).grid(row=2,column=0,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Nombre",width=250,height=50).grid(row=2,column=1,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Prerrequisitos",width=150,height=50).grid(row=2,column=2,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Opcionalidad",width=150,height=50).grid(row=2,column=3,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Semestre",width=150,height=50).grid(row=2,column=4,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Creditos",width=150,height=50).grid(row=2,column=5,sticky="we")
+        self.text = customtkinter.CTkLabel(master=self.panelDelete,text = "Estado",width=150,height=50).grid(row=2,column=6,sticky="we")
 
         self.btnDelete = customtkinter.CTkButton(master=self.panelDelete,text="Confirmar Eliminación",fg_color="#D35B58",hover_color="#C77C78",width=200,height=40,text_font=("Roboto Medium",12),command=self.delete)
         self.btnDelete.grid(row=7,column=1,columnspan=3,pady=(20,50),padx=(190,0),sticky="nw")
@@ -727,13 +731,86 @@ class App(customtkinter.CTk):
                 title='Open a file',
                 initialdir='',
                 filetypes=filetypes)
-            self.route.delete(0, 'end')
             self.data.readFile(fileRoute)
             self.tableData()
+            self.route.delete(0, 'end')
             self.route.insert(0,str(fileRoute))
             self.route.configure(state=tkinter.DISABLED)
         except:
-            messagebox.showinfo("Información", "No se ha cargado niugún archivo")
+            pass
+    
+    def panelManageCourses(self):
+        self.frameRight2.rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        self.frameRight2.rowconfigure(6, weight=10)
+        self.frameRight2.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        self.frameRight2.columnconfigure(6, weight=0)
+
+        self.panelApprovedCredits()
+        self.panelCreditsStudying()
+        self.panelOutstandingCredits()
+        self.requiredCredits1()
+        self.requiredCredits2()
+
+    def panelApprovedCredits(self):
+        self.panelApproved = customtkinter.CTkFrame(master=self.frameRight2)
+        self.panelApproved.grid(row=0,column=0,columnspan=2,rowspan=2,pady=20,padx=20,sticky="nswe")
+        self.panelApproved.rowconfigure(0, weight=1)
+        self.panelApproved.columnconfigure(0, weight=1)
+
+        self.label_info_1 = customtkinter.CTkLabel(master=self.panelApproved,text="Creditos Aprovados\n00",text_font=("Roboto Medium",16))
+        self.label_info_1.grid(row=0,column=0,sticky="snwe",padx=15,pady=15)
+
+    def panelCreditsStudying(self):
+        self.panelStudying = customtkinter.CTkFrame(master=self.frameRight2)
+        self.panelStudying.grid(row=0,column=2,columnspan=2,rowspan=2,pady=20,padx=20,sticky="nswe")
+        self.panelStudying.rowconfigure(0, weight=1)
+        self.panelStudying.columnconfigure(0, weight=1)
+
+        self.label_info_1 = customtkinter.CTkLabel(master=self.panelStudying,text="Creditos Cursando\n00",text_font=("Roboto Medium",16))
+        self.label_info_1.grid(row=0,column=0,sticky="snwe",padx=15,pady=15)
+
+    def panelOutstandingCredits(self):
+        self.panelOutstanding = customtkinter.CTkFrame(master=self.frameRight2)
+        self.panelOutstanding.grid(row=0,column=4,columnspan=2,rowspan=2,pady=20,padx=20,sticky="nswe")
+        self.panelOutstanding.rowconfigure(0, weight=1)
+        self.panelOutstanding.columnconfigure(0, weight=1)
+
+        self.label_info_1 = customtkinter.CTkLabel(master=self.panelOutstanding,text="Créditos Pendientes\n00",text_font=("Roboto Medium",16))
+        self.label_info_1.grid(row=0,column=0,sticky="snwe",padx=15,pady=15)
+
+    def requiredCredits1(self):
+        self.panelCount = customtkinter.CTkFrame(master=self.frameRight2)
+        self.panelCount.grid(row=2,column=3,columnspan=3,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
+        self.panelCount.rowconfigure(0, weight=1)
+        self.panelCount.columnconfigure(0, weight=1)
+
+        self.creditsN = 12
+        self.title1 = customtkinter.CTkLabel(master=self.panelCount,text=f"Créditos obligatorios hasta semestre N: {self.creditsN}",text_font=("Roboto Medium",16),fg_color="gray40")
+        self.title1.grid(row=0,column=0,padx=40,pady=(40,0),columnspan=2,sticky="nwe")
+
+        self.semesterN = customtkinter.CTkOptionMenu(master=self.panelCount,values=["1","2","3","4","5","6","7","8","9","10"])
+        self.semesterN.grid(row=1,column=0,padx=40,pady=40,sticky="nw")
+        self.semesterN.set('Semestre N')
+
+        self.count1 = customtkinter.CTkButton(master=self.panelCount)
+        self.count1.grid(row=1,column=1,padx=40,pady=40,sticky="ne")
+        
+    def requiredCredits2(self):
+        self.panelCount = customtkinter.CTkFrame(master=self.frameRight2)
+        self.panelCount.grid(row=2,column=0,columnspan=3,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
+        self.panelCount.rowconfigure(0, weight=1)
+        self.panelCount.columnconfigure(0, weight=1)
+
+        self.creditsN = 12
+        self.title2 = customtkinter.CTkLabel(master=self.panelCount,text=f"Créditos del semestre N: {self.creditsN}",text_font=("Roboto Medium",16),fg_color="gray40")
+        self.title2.grid(row=0,column=0,padx=40,pady=(40,0),columnspan=2,sticky="nwe")
+
+        self.semesterN = customtkinter.CTkOptionMenu(master=self.panelCount,values=["1","2","3","4","5","6","7","8","9","10"])
+        self.semesterN.grid(row=1,column=0,padx=40,pady=40,sticky="nw")
+        self.semesterN.set('Semestre N')
+
+        self.count2 = customtkinter.CTkButton(master=self.panelCount)
+        self.count2.grid(row=1,column=1,padx=40,pady=40,sticky="ne")
 
     def option1(self):
         self.getCourses.configure(state=tkinter.DISABLED)
@@ -741,8 +818,6 @@ class App(customtkinter.CTk):
         self.addCourse.configure(state=tkinter.NORMAL)
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.NORMAL)
-        self.route.configure(state=tkinter.NORMAL)
-        self.route.configure(state=tkinter.DISABLED)
 
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
@@ -756,7 +831,6 @@ class App(customtkinter.CTk):
         self.addCourse.configure(state=tkinter.NORMAL)
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.NORMAL)
-        self.route.configure(state=tkinter.DISABLED)
 
         self.table.grid_remove()
         self.panelAdd.grid_remove()
@@ -770,7 +844,6 @@ class App(customtkinter.CTk):
         self.addCourse.configure(state=tkinter.DISABLED)
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.NORMAL)
-        self.route.configure(state=tkinter.DISABLED)
 
         self.table.grid_remove()
         self.panelShow.grid_remove()
@@ -784,7 +857,6 @@ class App(customtkinter.CTk):
         self.addCourse.configure(state=tkinter.NORMAL)
         self.editCourse.configure(state=tkinter.DISABLED)
         self.deleteCourse.configure(state=tkinter.NORMAL)
-        self.route.configure(state=tkinter.DISABLED)
 
         self.table.grid_remove()
         self.panelShow.grid_remove()
@@ -798,7 +870,6 @@ class App(customtkinter.CTk):
         self.addCourse.configure(state=tkinter.NORMAL)
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.DISABLED)
-        self.route.configure(state=tkinter.DISABLED)
 
         self.table.grid_remove()
         self.panelShow.grid_remove()
