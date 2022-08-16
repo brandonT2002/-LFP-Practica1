@@ -43,10 +43,16 @@ class Controller:
         return False
 
     def approvedCredits(self):
-        self.count = 0
+        self.count1 = 0
         for i in self.courses:
             if i.state == '0':
-                self.count += i.credits
+                self.count1 += i.credits
+
+    def creditsStudying(self):
+        self.count2 = 0
+        for i in self.courses:
+            if i.state == '1':
+                self.count2 += i.credits
 
     def checkCourse(self,code):
         self.index = 0
