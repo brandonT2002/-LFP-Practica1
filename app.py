@@ -36,8 +36,11 @@ class App(customtkinter.CTk):
         self.frameRight2 = customtkinter.CTkFrame(master=self)
         self.frameRight2.grid(row=0,column=1,sticky="nswe",padx=20,pady=20)
 
+        self.frameRight2.grid_remove()
+
         self.panelOptions()
         self.panelManageCourses()
+        self.panelCountCredits()
 
     def panelOptions(self):
         # ============ frame_left ============
@@ -53,10 +56,10 @@ class App(customtkinter.CTk):
         self.fileUpload = customtkinter.CTkButton(master=self.frameLeft,text="Cargar Archivos",command=self.selectFile)
         self.fileUpload.grid(row=2,column=0,pady=10,padx=20)
 
-        self.manageCourses = customtkinter.CTkButton(master=self.frameLeft,text="Gestionar Cursos")
+        self.manageCourses = customtkinter.CTkButton(master=self.frameLeft,text="Gestionar Cursos",command=self.optionManage)
         self.manageCourses.grid(row=3,column=0,pady=10,padx=20)
 
-        self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Conteo de Creditos")
+        self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Conteo de Creditos",command=self.optionCount)
         self.credits.grid(row=4,column=0,pady=10,padx=20)
 
         self.credits = customtkinter.CTkButton(master=self.frameLeft,text="Salir",fg_color="#D35B58",hover_color="#C77C78",command=self.quit)
@@ -739,7 +742,7 @@ class App(customtkinter.CTk):
         except:
             pass
     
-    def panelManageCourses(self):
+    def panelCountCredits(self):
         self.frameRight2.rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
         self.frameRight2.rowconfigure(6, weight=10)
         self.frameRight2.columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
@@ -926,6 +929,14 @@ class App(customtkinter.CTk):
         self.btnEnableEdit.configure(state=tkinter.DISABLED)
         self.codeEd.configure(state=tkinter.NORMAL)
         self.searchCEdit.configure(state=tkinter.NORMAL)
+
+    def optionManage(self):
+        self.frameRight2.grid_remove()
+        self.frameRight1.grid()
+
+    def optionCount(self):
+        self.frameRight1.grid_remove()
+        self.frameRight2.grid()
 
     def onClosing(self, event=0):
         self.destroy()
