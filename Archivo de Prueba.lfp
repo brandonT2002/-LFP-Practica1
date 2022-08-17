@@ -1,0 +1,27 @@
+017,Social Humanística 1,,1,1,4,0
+101,Mate Básica 1,,1,1,7,0
+069,Técnica Complementaria 1,,1,1,3,0
+039,Deportes 1,,0,1,1,0
+348,Química General 1,,1,1,3,0
+0006,Idioma Técnico 1,,0,1,2,-1
+019,Social Humanística 2,017,1,2,4,0
+103,Mate Basica 2,101,1,2,7,0
+005,Tecnicas de estudio,,1,2,2,0
+147,Fisica B,101,1,2,3,0
+040,Deportes 2,039,0,2,1,-1
+0008,Idioma Técnico 2,0006,0,2,2,-1
+795,Lógica de Sistemas,103,1,3,2,0
+960,Mate computo 1,103,1,3,5,0
+770,Introducción a la programación 1,103,1,3,4,0
+107,Mate Intermedia 1,103,1,3,10,0
+150,Física 1,103;147,1,3,6,0
+0009,Idioma Técnico 3,0008,0,3,2,-1
+732,Estadística 1,107;005,1,4,5,0
+796,Lenguajes Formales,770;795;960,1,4,3,1
+962,Mate Computo 2,960;770;795,1,4,5,1
+771,Introducción a la programación 2,107;770;795;960,1,4,5,0
+010,Lógica,019,0,4,2,1
+112,Mate Intermedia 2,107,1,4,5,0
+114,Mate Intermedia 3,107,1,4,5,0
+005,Tecnicas de estudio e investigación,,1,2,3,0
+147,Fisica Básica,101,1,2,5,0
