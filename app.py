@@ -321,11 +321,11 @@ class App(customtkinter.CTk):
             mandatory = 0
 
         if state == 'Aprobado':
-            state = 0
+            state = '0'
         elif state == 'Cursando':
-            state = 1
+            state = '1'
         else:
-            state = -1
+            state = '-1'
             
         if code == '' or name == '' or credits == '' or semester == '' or mandatory == 'Opcionalidad' or state == 'Estado':
             messagebox.showinfo("Información", "Todos los campos son obligatorios")
