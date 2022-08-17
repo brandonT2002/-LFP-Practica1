@@ -338,6 +338,7 @@ class App(customtkinter.CTk):
                     messagebox.showinfo("Información", "Curso agregado exitosamente")
                     self.tableCourses()
                     self.table.grid_remove()
+                    self.updatePanelCount()
 
                     self.codeAdd.delete(0, 'end')
                     self.nameAdd.delete(0, 'end')
@@ -548,16 +549,16 @@ class App(customtkinter.CTk):
         state = self.stateEdit.get()
 
         if mandatory == 'Opcional':
-            mandatory = 1
+                mandatory = 0
         else:
-            mandatory = 0
+            mandatory = 1
 
         if state == 'Aprobado':
-            state = 0
+            state = '0'
         elif state == 'Cursando':
-            state = 1
+            state = '1'
         else:
-            state = -1
+            state = '-1'
 
         if name == '' or credits == '' or semester == '' or mandatory == 'Opcionalidad' or state == 'Estado':
             messagebox.showinfo("Información", "Todos los campos son obligatorios")
@@ -565,6 +566,7 @@ class App(customtkinter.CTk):
             try:
                 if self.data.editCourse(int(code),name,prerequisite,mandatory,int(semester),int(credits),state):
                     messagebox.showinfo("Información", "Curso actualizado exitosamente")
+                    self.updatePanelCount()
                     self.reset()
             except:
                 messagebox.showinfo("Información", "Datos Incorrectos")
@@ -701,6 +703,7 @@ class App(customtkinter.CTk):
                     self.table.grid_remove()
                     self.btnDelete.grid_remove()
                     self.btnCancelD.grid_remove()
+                    self.updatePanelCount()
                     self.codeD.configure(state=tkinter.NORMAL)
                     self.deleteC.configure(state=tkinter.NORMAL)
                     self.codeD.delete(0, 'end')
@@ -739,8 +742,7 @@ class App(customtkinter.CTk):
             self.route.delete(0, 'end')
             self.route.insert(0,str(fileRoute))
             self.route.configure(state=tkinter.DISABLED)
-            self.data.approvedCredits()
-            self.panelCountCredits()
+            self.updatePanelCount()
         except:
             pass
     
@@ -755,6 +757,11 @@ class App(customtkinter.CTk):
         self.panelOutstandingCredits()
         self.requiredCredits1()
         self.requiredCredits2()
+
+    def updatePanelCount(self):
+        self.panelCountCredits()
+        self.data.approvedCredits()
+        self.data.creditsStudying()
 
     def panelApprovedCredits(self):
         self.panelApproved = customtkinter.CTkFrame(master=self.frameRight2)
@@ -941,6 +948,11 @@ class App(customtkinter.CTk):
     def optionCount(self):
         self.frameRight1.grid_remove()
         self.frameRight2.grid()
+
+    def updateCredits(self):
+        self.data.approvedCredits()
+        self.panelCountCredits()
+        self.data.creditsStudying()
 
     def onClosing(self, event=0):
         self.destroy()

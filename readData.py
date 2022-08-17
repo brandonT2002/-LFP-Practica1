@@ -21,7 +21,7 @@ class Controller:
     def addCourse(self,code,name,prerequisite,mandatory,semester,credits,state):
         if self.checkCourse(code):
             return False
-        self.courses.append(Course(code,name,prerequisite.split(';'),mandatory,semester,credits,state))
+        self.courses.append(Course(int(code),name,prerequisite.split(';'),int(mandatory),int(semester),int(credits),state))
         return True
 
     def editCourse(self,code,name,prerequisite,mandatory,semester,credits,state):
