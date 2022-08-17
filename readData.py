@@ -54,6 +54,12 @@ class Controller:
             if i.state == '1':
                 self.count2 += i.credits
 
+    def outstandingCredits(self):
+        self.count3 = 0
+        for i in self.courses:
+            if i.state == '-1' and i.mandatory == 1:
+                self.count3 += i.credits
+
     def checkCourse(self,code):
         self.index = 0
         for i in self.courses:
