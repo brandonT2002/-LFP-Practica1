@@ -60,6 +60,12 @@ class Controller:
             if i.state == '-1' and i.mandatory == 1:
                 self.count3 += i.credits
 
+    def creditsSemesterN(self,semester):
+        self.countSemester = 0
+        for i in self.courses:
+            if i.semester == semester:
+                self.countSemester += i.credits
+
     def checkCourse(self,code):
         self.index = 0
         for i in self.courses:
