@@ -808,8 +808,17 @@ class App(customtkinter.CTk):
         self.semesterN1.grid(row=1,column=0,padx=40,pady=40,sticky="nw")
         self.semesterN1.set('Semestre N')
 
-        self.count1 = customtkinter.CTkButton(master=self.panelCount1,text="Contar")
+        self.count1 = customtkinter.CTkButton(master=self.panelCount1,text="Contar",command=self.countSemesterN)
         self.count1.grid(row=1,column=1,padx=40,pady=40,sticky="ne")
+
+    def countSemesterN(self):
+        if self.semesterN1.get() == "Semestre N":
+            messagebox.showinfo("Información", "Seleccione un semestre")
+        else:
+            self.data.creditsSemesterN(int(self.semesterN1.get()))
+            self.creditsN1 = self.data.countSemester
+            self.title1 = customtkinter.CTkLabel(master=self.panelCount1,text=f"Créditos del semestre {self.semesterN1.get()}: {self.creditsN1}",text_font=("Roboto Medium",16),fg_color="gray40")
+            self.title1.grid(row=0,column=0,padx=40,pady=(40,0),columnspan=2,sticky="nwe")
 
     def requiredCredits2(self):
         self.panelCount = customtkinter.CTkFrame(master=self.frameRight2)
