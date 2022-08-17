@@ -801,7 +801,7 @@ class App(customtkinter.CTk):
         self.panelCount1.columnconfigure(0, weight=1)
 
         self.creditsN1 = 0
-        self.title1 = customtkinter.CTkLabel(master=self.panelCount1,text=f"Créditos del semestre N: {self.creditsN1}",text_font=("Roboto Medium",16),fg_color="gray40")
+        self.title1 = customtkinter.CTkLabel(master=self.panelCount1,text=f"Créditos del semestre N: {self.creditsN1}",text_font=("Roboto Medium",16))
         self.title1.grid(row=0,column=0,padx=40,pady=(40,0),columnspan=2,sticky="nwe")
 
         self.semesterN1 = customtkinter.CTkOptionMenu(master=self.panelCount1,values=["1","2","3","4","5","6","7","8","9","10"])
@@ -817,7 +817,7 @@ class App(customtkinter.CTk):
         else:
             self.data.creditsSemesterN(int(self.semesterN1.get()))
             self.creditsN1 = self.data.countSemester
-            self.title1 = customtkinter.CTkLabel(master=self.panelCount1,text=f"Créditos del semestre {self.semesterN1.get()}: {self.creditsN1}",text_font=("Roboto Medium",16),fg_color="gray40")
+            self.title1 = customtkinter.CTkLabel(master=self.panelCount1,text=f"Créditos del semestre {self.semesterN1.get()}: {self.creditsN1}",text_font=("Roboto Medium",16))
             self.title1.grid(row=0,column=0,padx=40,pady=(40,0),columnspan=2,sticky="nwe")
 
     def requiredCredits2(self):
@@ -827,15 +827,24 @@ class App(customtkinter.CTk):
         self.panelCount.columnconfigure(0, weight=1)
 
         self.creditsN2 = 0
-        self.title2 = customtkinter.CTkLabel(master=self.panelCount,text=f"Créditos obligatorios hasta semestre N: {self.creditsN2}",text_font=("Roboto Medium",16),fg_color="gray40")
+        self.title2 = customtkinter.CTkLabel(master=self.panelCount,text=f"Créditos obligatorios hasta semestre N: {self.creditsN2}",text_font=("Roboto Medium",16))
         self.title2.grid(row=0,column=0,padx=40,pady=(40,0),columnspan=2,sticky="nwe")
 
         self.semesterN2 = customtkinter.CTkOptionMenu(master=self.panelCount,values=["1","2","3","4","5","6","7","8","9","10"])
         self.semesterN2.grid(row=1,column=0,padx=40,pady=40,sticky="nw")
         self.semesterN2.set('Semestre N')
 
-        self.count2 = customtkinter.CTkButton(master=self.panelCount,text="Contar")
+        self.count2 = customtkinter.CTkButton(master=self.panelCount,text="Contar",command=self.countSemesterTo)
         self.count2.grid(row=1,column=1,padx=40,pady=40,sticky="ne")
+
+    def countSemesterTo(self):
+        if self.semesterN2.get() == "Semestre N":
+            messagebox.showinfo("Información", "Seleccione un semestre")
+        else:
+            self.data.creditsUpTo(int(self.semesterN2.get()))
+            self.creditsN2 = self.data.countSemesterTo
+            self.title2 = customtkinter.CTkLabel(master=self.panelCount,text=f"Créditos obligatorios hasta semestre {self.semesterN2.get()}: {self.creditsN2}",text_font=("Roboto Medium",16))
+            self.title2.grid(row=0,column=0,padx=40,pady=(40,0),columnspan=2,sticky="nwe")
 
     def option1(self):
         self.getCourses.configure(state=tkinter.DISABLED)
