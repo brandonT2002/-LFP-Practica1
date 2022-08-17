@@ -66,6 +66,12 @@ class Controller:
             if i.semester == semester:
                 self.countSemester += i.credits
 
+    def creditsUpTo(self,semester):
+        self.countSemesterTo = 0
+        for i in self.courses:
+            if i.mandatory == 1 and i.semester <= semester:
+                self.countSemesterTo += i.credits
+
     def checkCourse(self,code):
         self.index = 0
         for i in self.courses:
