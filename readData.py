@@ -9,7 +9,8 @@ class Controller:
         cursos = open(route,encoding='utf-8').read().split('\n')
         for course in cursos:
             course = course.split(',')
-            self.courses.append(Course(int(course[0]),course[1],course[2].split(';'),int(course[3]),int(course[4]),int(course[5]),course[6]))
+            if not self.checkCourse(int(course[0])):
+                self.courses.append(Course(int(course[0]),course[1],course[2].split(';'),int(course[3]),int(course[4]),int(course[5]),course[6]))
 
     def searchCourse(self,code):
         course = self.checkCourse(code)
