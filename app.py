@@ -1,6 +1,7 @@
 import tkinter
-from tkinter import filedialog as fd
+from tkinter import Scrollbar, Tk, filedialog as fd
 from tkinter import messagebox
+from turtle import bgcolor
 from idlelib.tooltip import Hovertip
 import customtkinter
 from readData import Controller
@@ -21,6 +22,7 @@ class App(customtkinter.CTk):
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
         self.protocol("WM_DELETE_WINDOW", self.onClosing)
         self.minsize(App.WIDTH,App.HEIGHT)
+        self.state('zoomed')
 
         # ============ create two frames ============
         # configure grid layout (2x1)
@@ -109,31 +111,52 @@ class App(customtkinter.CTk):
         self.panelDelete.grid_remove()
 
     def tableCourses(self):
-        self.table = customtkinter.CTkFrame(master=self.frameRight1)
-        self.table.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(10,20),sticky="nwe")
+        self.container = customtkinter.CTkFrame(master=self.frameRight1)
+        self.container.grid(row=2,column=0,columnspan=5,rowspan=5,padx=20,pady=(0,20),sticky="nwe")
+        self.container.rowconfigure(0, weight=1)
+        self.container.columnconfigure(0, weight=1)
+
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Código",width=50,height=50).grid(row=0,column=0,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Nombre",width=250,height=50).grid(row=0,column=1,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Prerrequisitos",width=150,height=50).grid(row=0,column=2,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Opcionalidad",width=150,height=50).grid(row=0,column=3,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Semestre",width=150,height=50).grid(row=0,column=4,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Creditos",width=150,height=50).grid(row=0,column=5,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Estado",width=150,height=50).grid(row=0,column=6,sticky="nwe")
+
+        self.table = customtkinter.CTkFrame(master=self.container,height=280)
+        self.table.grid(row=1,column=0,columnspan=7,rowspan=5,padx=20,pady=(0,20),sticky="nswe")
         self.table.rowconfigure(0, weight=1)
         self.table.columnconfigure(0, weight=1)
-        
+
         self.tableData()
 
     def tableData(self):
         self.results = self.data.courses
-        
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Código",width=50,height=50).grid(row=0,column=0,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Nombre",width=250,height=50).grid(row=0,column=1,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Prerrequisitos",width=150,height=50).grid(row=0,column=2,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Opcionalidad",width=150,height=50).grid(row=0,column=3,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Semestre",width=150,height=50).grid(row=0,column=4,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Creditos",width=150,height=50).grid(row=0,column=5,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.table,text = "Estado",width=150,height=50).grid(row=0,column=6,sticky="nwe")
 
+        if len(self.results) > 0:
+            canvas = customtkinter.CTkCanvas(self.table,height=280,bd=0,highlightthickness=0)
+            scrollbar = customtkinter.CTkScrollbar(self.table,command=canvas.yview)
+            self.scrollableFrame = customtkinter.CTkFrame(canvas,bg_color='#36F748')
+
+            self.scrollableFrame.bind(
+                '<Configure>',
+                lambda e: canvas.configure(
+                    scrollregion=canvas.bbox('all')
+                )
+            )
+            canvas.create_window((0,0),window=self.scrollableFrame,anchor='nw')
+            canvas.configure(yscrollcommand=scrollbar.set)
+            canvas.grid(row=0,column=0,rowspan=5,columnspan=5,sticky='nwes')
+            scrollbar.grid(row=0,column=1,sticky='ns')
+        
         for i in range(len(self.results)):
-            exec(f"self.e{i}code = customtkinter.CTkEntry(self.table,width=50)")
+            exec(f"self.e{i}code = customtkinter.CTkEntry(self.scrollableFrame,width=50)")
             exec(f"self.e{i}code.grid(row={i}+1,column=0,columnspan=1,sticky='we')")
             exec(f"self.e{i}code.insert('end',self.results[{i}].code)")
             exec(f"self.e{i}code.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}name = customtkinter.CTkEntry(self.table,width=250)")
+            exec(f"self.e{i}name = customtkinter.CTkEntry(self.scrollableFrame,width=250)")
             exec(f"self.e{i}name.grid(row={i}+1,column=1,columnspan=1,sticky='we')")
             exec(f"self.e{i}name.insert('end',self.results[{i}].name)")
             exec(f"self.e{i}name.configure(state=tkinter.DISABLED)")
@@ -141,12 +164,12 @@ class App(customtkinter.CTk):
             pre = ''
             for pr in self.results[i].prerequisite:
                 pre += pr + ' '
-            exec(f"self.e{i}prerequisite = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}prerequisite = customtkinter.CTkEntry(self.scrollableFrame,width=150)")
             exec(f"self.e{i}prerequisite.grid(row={i}+1,column=2,columnspan=1,sticky='e')")
             exec(f"self.e{i}prerequisite.insert('end','{pre}')")
             exec(f"self.e{i}prerequisite.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}mandatory = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}mandatory = customtkinter.CTkEntry(self.scrollableFrame,width=150)")
             exec(f"self.e{i}mandatory.grid(row={i}+1,column=3,columnspan=1,sticky='e')")
             if int(self.results[i].mandatory) == 1:
                 exec(f"self.e{i}mandatory.insert('end','Obligatorio')")
@@ -156,18 +179,18 @@ class App(customtkinter.CTk):
                 exec(f"self.e{i}mandatory.insert('end','Error')")
             exec(f"self.e{i}mandatory.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}semester = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}semester = customtkinter.CTkEntry(self.scrollableFrame,width=150)")
             exec(f"self.e{i}semester.grid(row={i}+1,column=4,columnspan=1,sticky='e')")
             exec(f"self.e{i}semester.insert('end',self.results[{i}].semester)")
             exec(f"self.e{i}semester.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}credits = customtkinter.CTkEntry(self.table,width=150)")
+            exec(f"self.e{i}credits = customtkinter.CTkEntry(self.scrollableFrame,width=150)")
             exec(f"self.e{i}credits.grid(row={i}+1,column=5,columnspan=1,sticky='e')")
             exec(f"self.e{i}credits.insert('end',self.results[{i}].credits)")
             exec(f"self.e{i}credits.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}state = customtkinter.CTkEntry(self.table,width=150)")
-            exec(f"self.e{i}state.grid(row={i}+1,column=6,columnspan=1,sticky='e')")
+            exec(f"self.e{i}state = customtkinter.CTkEntry(self.scrollableFrame,width=150)")
+            exec(f"self.e{i}state.grid(row={i}+1,column=6,columnspan=1,sticky='we')")
             if int(self.results[i].state) == 0:
                 exec(f"self.e{i}state.insert('end','Aprobado')")
             elif int(self.results[i].state) == 1:
