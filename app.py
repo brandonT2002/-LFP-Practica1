@@ -116,16 +116,16 @@ class App(customtkinter.CTk):
         self.container.rowconfigure(0, weight=1)
         self.container.columnconfigure(0, weight=1)
 
-        self.text = customtkinter.CTkLabel(master=self.container,text = "Código",width=50,height=50).grid(row=0,column=0,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.container,text = "Nombre",width=250,height=50).grid(row=0,column=1,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.container,text = "Prerrequisitos",width=150,height=50).grid(row=0,column=2,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Código",width=100,height=50).grid(row=0,column=0,padx=(20,0),sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Nombre",width=270,height=50).grid(row=0,column=1,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Prerrequisitos",width=166,height=50).grid(row=0,column=2,sticky="nwe")
         self.text = customtkinter.CTkLabel(master=self.container,text = "Opcionalidad",width=150,height=50).grid(row=0,column=3,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.container,text = "Semestre",width=150,height=50).grid(row=0,column=4,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.container,text = "Creditos",width=150,height=50).grid(row=0,column=5,sticky="nwe")
-        self.text = customtkinter.CTkLabel(master=self.container,text = "Estado",width=150,height=50).grid(row=0,column=6,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Semestre",width=115,height=50).grid(row=0,column=4,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Creditos",width=115,height=50).grid(row=0,column=5,sticky="nwe")
+        self.text = customtkinter.CTkLabel(master=self.container,text = "Estado",width=150,height=50).grid(row=0,column=6,padx=(0,20),sticky="nwe")
 
         self.table = customtkinter.CTkFrame(master=self.container,height=280)
-        self.table.grid(row=1,column=0,columnspan=7,rowspan=5,padx=20,pady=(0,20),sticky="nswe")
+        self.table.grid(row=1,column=0,columnspan=7,rowspan=5,padx=(20,4),pady=(0,20),sticky="nswe")
         self.table.rowconfigure(0, weight=1)
         self.table.columnconfigure(0, weight=1)
 
@@ -151,12 +151,12 @@ class App(customtkinter.CTk):
             scrollbar.grid(row=0,column=1,sticky='ns')
         
         for i in range(len(self.results)):
-            exec(f"self.e{i}code = customtkinter.CTkEntry(self.scrollableFrame,width=50)")
+            exec(f"self.e{i}code = customtkinter.CTkEntry(self.scrollableFrame,width=100)")
             exec(f"self.e{i}code.grid(row={i}+1,column=0,columnspan=1,sticky='we')")
             exec(f"self.e{i}code.insert('end',self.results[{i}].code)")
             exec(f"self.e{i}code.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}name = customtkinter.CTkEntry(self.scrollableFrame,width=250)")
+            exec(f"self.e{i}name = customtkinter.CTkEntry(self.scrollableFrame,width=270)")
             exec(f"self.e{i}name.grid(row={i}+1,column=1,columnspan=1,sticky='we')")
             exec(f"self.e{i}name.insert('end',self.results[{i}].name)")
             exec(f"self.e{i}name.configure(state=tkinter.DISABLED)")
@@ -164,7 +164,7 @@ class App(customtkinter.CTk):
             pre = ''
             for pr in self.results[i].prerequisite:
                 pre += pr + ' '
-            exec(f"self.e{i}prerequisite = customtkinter.CTkEntry(self.scrollableFrame,width=150)")
+            exec(f"self.e{i}prerequisite = customtkinter.CTkEntry(self.scrollableFrame,width=166)")
             exec(f"self.e{i}prerequisite.grid(row={i}+1,column=2,columnspan=1,sticky='e')")
             exec(f"self.e{i}prerequisite.insert('end','{pre}')")
             exec(f"self.e{i}prerequisite.configure(state=tkinter.DISABLED)")
@@ -179,12 +179,12 @@ class App(customtkinter.CTk):
                 exec(f"self.e{i}mandatory.insert('end','Error')")
             exec(f"self.e{i}mandatory.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}semester = customtkinter.CTkEntry(self.scrollableFrame,width=150)")
+            exec(f"self.e{i}semester = customtkinter.CTkEntry(self.scrollableFrame,width=115)")
             exec(f"self.e{i}semester.grid(row={i}+1,column=4,columnspan=1,sticky='e')")
             exec(f"self.e{i}semester.insert('end',self.results[{i}].semester)")
             exec(f"self.e{i}semester.configure(state=tkinter.DISABLED)")
 
-            exec(f"self.e{i}credits = customtkinter.CTkEntry(self.scrollableFrame,width=150)")
+            exec(f"self.e{i}credits = customtkinter.CTkEntry(self.scrollableFrame,width=115)")
             exec(f"self.e{i}credits.grid(row={i}+1,column=5,columnspan=1,sticky='e')")
             exec(f"self.e{i}credits.insert('end',self.results[{i}].credits)")
             exec(f"self.e{i}credits.configure(state=tkinter.DISABLED)")
@@ -880,7 +880,7 @@ class App(customtkinter.CTk):
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
         self.panelDelete.grid_remove()
-        self.table.grid()
+        self.container.grid()
 
     def option2(self):
         self.getCourses.configure(state=tkinter.NORMAL)
@@ -889,7 +889,7 @@ class App(customtkinter.CTk):
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.NORMAL)
 
-        self.table.grid_remove()
+        self.container.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
         self.panelDelete.grid_remove()
@@ -902,7 +902,7 @@ class App(customtkinter.CTk):
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.NORMAL)
 
-        self.table.grid_remove()
+        self.container.grid_remove()
         self.panelShow.grid_remove()
         self.panelEdit.grid_remove()
         self.panelDelete.grid_remove()
@@ -915,7 +915,7 @@ class App(customtkinter.CTk):
         self.editCourse.configure(state=tkinter.DISABLED)
         self.deleteCourse.configure(state=tkinter.NORMAL)
 
-        self.table.grid_remove()
+        self.container.grid_remove()
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
         self.panelDelete.grid_remove()
@@ -928,7 +928,7 @@ class App(customtkinter.CTk):
         self.editCourse.configure(state=tkinter.NORMAL)
         self.deleteCourse.configure(state=tkinter.DISABLED)
 
-        self.table.grid_remove()
+        self.container.grid_remove()
         self.panelShow.grid_remove()
         self.panelAdd.grid_remove()
         self.panelEdit.grid_remove()
